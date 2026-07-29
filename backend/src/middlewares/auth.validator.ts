@@ -1,22 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
+import { registerSchema } from '../validators/auth.schema';
 
 export const validateRegistration = (req: Request, res: Response, next: NextFunction): void => {
-    const { email, password } = req.body;
+    const result = registerSchema.safeParse(req.body);
 
-    if (!email) {
-        res.status(400).json({ error: 'Email is required' });
-        return;
-    }
-    if (!password) {
-        res.status(400).json({ error: 'Password is required' });
-        return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        res.status(400).json({ error: 'Invalid email format' });
+    if (!result.success) {
+        // Zod v4 uses .issues (previously .errors)
+        const firstIssue = result.error.issues[0];
+        res.status(400).json({ error: firstIssue.message });
         return;
     }
 
+    // Replace req.body with the safely parsed + typed data
+    req.body = result.data;
     next();
 };
