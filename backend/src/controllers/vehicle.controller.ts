@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as vehicleService from '../services/vehicle.service';
 import { catchAsync } from '../utils/catchAsync';
+import { AppError } from '../errors/AppError';
 
 export const createVehicle = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const vehicle = await vehicleService.createVehicle(req.body);
@@ -19,4 +20,20 @@ export const getVehicles = catchAsync(async (req: Request, res: Response): Promi
 export const searchVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const vehicles = await vehicleService.searchVehicles(req.query);
     res.status(200).json({ vehicles });
+});
+
+// ── Update a vehicle ───────────────────────────────────────────
+export const updateVehicle = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id, 10);
+
+    if (isNaN(id)) {
+        throw new AppError('Vehicle id must be a valid integer', 400);
+    }
+
+    const vehicle = await vehicleService.updateVehicle(id, req.body);
+
+    res.status(200).json({
+        message: 'Vehicle updated successfully',
+        vehicle
+    });
 });

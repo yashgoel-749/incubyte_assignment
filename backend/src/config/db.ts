@@ -41,6 +41,19 @@ if (process.env.NODE_ENV === 'test') {
                     }
                 }
                 return result;
+            },
+            // ── Find single vehicle by primary key (mirrors Prisma) ───────
+            findUnique: async (args: any) => {
+                const id = args?.where?.id;
+                return vehicles.find(v => v.id === id) ?? null;
+            },
+            // ── Update a vehicle in-place ────────────────────────────
+            update: async (args: any) => {
+                const id = args?.where?.id;
+                const idx = vehicles.findIndex(v => v.id === id);
+                if (idx === -1) throw new Error(`Record with id ${id} not found`);
+                vehicles[idx] = { ...vehicles[idx], ...args.data };
+                return vehicles[idx];
             }
         }
     } as any;

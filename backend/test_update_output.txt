@@ -1,0 +1,222 @@
+﻿  console.log
+    Γùç injected env (2) from .env // tip: Γîÿ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.error
+    Unhandled error: TypeError: db_1.prisma.vehicle.findUnique is not a function
+        at Object.findById (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\repositories\vehicle.repository.ts:29:33)
+        at Object.updateVehicle (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\services\vehicle.service.ts:28:46)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\controllers\vehicle.controller.ts:33:42
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\utils\catchAsync.ts:13:9
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\middlewares\validate.ts:19:9
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at authenticate (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\middlewares\authenticate.ts:41:9)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at Route.dispatch (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:119:3)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:284:15
+        at param (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:365:14)
+        at param (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:376:14)
+        at Function.process_params (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:421:3)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:280:10)
+        at Function.handle (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:175:3)
+        at router (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:47:12)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at trim_prefix (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:328:13)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:286:9
+        at Function.process_params (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:346:12)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:280:10)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\body-parser\lib\read.js:137:5
+        at AsyncResource.runInAsyncScope (node:async_hooks:206:9)
+        at invokeCallback (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:238:16)
+        at done (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:227:7)
+        at IncomingMessage.onEnd (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:287:7)
+        at IncomingMessage.emit (node:events:524:28)
+        at IncomingMessage.emit (node:domain:489:12)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+    [0m [90m 21 |[39m
+     [90m 22 |[39m     [90m// Unexpected / programming error ΓÇö don't leak details[39m
+    [31m[1m>[22m[39m[90m 23 |[39m     console[33m.[39merror([32m'Unhandled error:'[39m[33m,[39m err)[33m;[39m
+     [90m    |[39m             [31m[1m^[22m[39m
+     [90m 24 |[39m     res[33m.[39mstatus([35m500[39m)[33m.[39mjson({ error[33m:[39m [32m'Internal server error'[39m })[33m;[39m
+     [90m 25 |[39m }[33m;[39m
+     [90m 26 |[39m[0m
+
+      at errorHandler (src/middlewares/errorHandler.ts:23:13)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at Immediate.next (node_modules/express/lib/router/index.js:280:10)
+      at Immediate._onImmediate (node_modules/express/lib/router/index.js:646:15)
+
+  console.error
+    Unhandled error: TypeError: db_1.prisma.vehicle.findUnique is not a function
+        at Object.findById (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\repositories\vehicle.repository.ts:29:33)
+        at Object.updateVehicle (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\services\vehicle.service.ts:28:46)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\controllers\vehicle.controller.ts:33:42
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\utils\catchAsync.ts:13:9
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\middlewares\validate.ts:19:9
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at authenticate (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\src\middlewares\authenticate.ts:41:9)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:149:13)
+        at Route.dispatch (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\route.js:119:3)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:284:15
+        at param (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:365:14)
+        at param (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:376:14)
+        at Function.process_params (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:421:3)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:280:10)
+        at Function.handle (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:175:3)
+        at router (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:47:12)
+        at Layer.handle [as handle_request] (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\layer.js:95:5)
+        at trim_prefix (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:328:13)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:286:9
+        at Function.process_params (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:346:12)
+        at next (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\express\lib\router\index.js:280:10)
+        at C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\body-parser\lib\read.js:137:5
+        at AsyncResource.runInAsyncScope (node:async_hooks:206:9)
+        at invokeCallback (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:238:16)
+        at done (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:227:7)
+        at IncomingMessage.onEnd (C:\Users\goely\OneDrive\Desktop\yash_incubyte\backend\node_modules\raw-body\index.js:287:7)
+        at IncomingMessage.emit (node:events:524:28)
+        at IncomingMessage.emit (node:domain:489:12)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+    [0m [90m 21 |[39m
+     [90m 22 |[39m     [90m// Unexpected / programming error ΓÇö don't leak details[39m
+    [31m[1m>[22m[39m[90m 23 |[39m     console[33m.[39merror([32m'Unhandled error:'[39m[33m,[39m err)[33m;[39m
+     [90m    |[39m             [31m[1m^[22m[39m
+     [90m 24 |[39m     res[33m.[39mstatus([35m500[39m)[33m.[39mjson({ error[33m:[39m [32m'Internal server error'[39m })[33m;[39m
+     [90m 25 |[39m }[33m;[39m
+     [90m 26 |[39m[0m
+
+      at errorHandler (src/middlewares/errorHandler.ts:23:13)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at Immediate.next (node_modules/express/lib/router/index.js:280:10)
+      at Immediate._onImmediate (node_modules/express/lib/router/index.js:646:15)
+
+npx : FAIL tests/vehicles.update.test.ts
+At line:1 char:1
++ npx jest 
+tests/vehicles.update.test.ts 
+--no-coverage --forceExit --ve ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecif 
+   ied: (FAIL tests/vehicles.update.te  
+  st.ts:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCom 
+   mandError
+ 
+  Vehicles API - Update Vehicle
+    PUT /api/vehicles/:id
+      ΓêÜ should fail with 401 when 
+request is unauthorized (no token 
+provided) (9 ms)
+      ΓêÜ should fail with 400 when 
+validation errors occur (e.g., negative 
+price) (7 ms)
+      ├ù should fail with 404 when 
+providing a non-existent vehicle ID (35 
+ms)
+      ΓêÜ should fail with 400 when 
+providing a malformed ID (7 ms)
+      ├ù should successfully update the 
+vehicle and return 200 properly (10 ms)
+
+  ΓùÅ Vehicles API - Update Vehicle ΓÇ║ 
+PUT /api/vehicles/:id ΓÇ║ should fail 
+with 404 when providing a non-existent 
+vehicle ID
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 404
+    Received: 500
+
+    [0m [90m 60 |[39m                
+ [33m.[39msend({ 
+[33m...[39minitialVehicle[33m,[39m 
+price[33m:[39m [35m21000[39m 
+})[33m;[39m
+     [90m 61 |[39m
+    [31m[1m>[22m[39m[90m 62 |[39m 
+            expect(response[33m.[39mst
+atus)[33m.[39mtoBe([35m404[39m)[33m
+;[39m
+     [90m    |[39m                    
+                 [31m[1m^[22m[39m
+     [90m 63 |[39m             expect(
+response[33m.[39mbody)[33m.[39mtoHav
+eProperty([32m'error'[39m)[33m;[39m
+     [90m 64 |[39m         
+})[33m;[39m
+     [90m 65 |[39m[0m
+
+      at Object.<anonymous> 
+(tests/vehicles.update.test.ts:62:37)
+
+  ΓùÅ Vehicles API - Update Vehicle ΓÇ║ 
+PUT /api/vehicles/:id ΓÇ║ should 
+successfully update the vehicle and 
+return 200 properly
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: 200
+    Received: 500
+
+    [0m [90m 89 |[39m                
+ [33m.[39msend(updatedPayload)[33m;[
+39m
+     [90m 90 |[39m
+    [31m[1m>[22m[39m[90m 91 |[39m 
+            expect(response[33m.[39mst
+atus)[33m.[39mtoBe([35m200[39m)[33m
+;[39m
+     [90m    |[39m                    
+                 [31m[1m^[22m[39m
+     [90m 92 |[39m             expect(
+response[33m.[39mbody)[33m.[39mtoHav
+eProperty([32m'vehicle'[39m)[33m;[39
+m
+     [90m 93 |[39m             expect(
+response[33m.[39mbody[33m.[39mvehicl
+e[33m.[39mprice)[33m.[39mtoBe([35m1
+8500[39m)[33m;[39m
+     [90m 94 |[39m             expect(
+response[33m.[39mbody[33m.[39mvehicl
+e[33m.[39mstatus)[33m.[39mtoBe([32m
+'SOLD'[39m)[33m;[39m[0m
+
+      at Object.<anonymous> 
+(tests/vehicles.update.test.ts:91:37)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 3 passed, 5 total
+Snapshots:   0 total
+Time:        3.767 s, estimated 4 s
+Ran all test suites matching 
+/tests\\vehicles.update.test.ts/i.
+Force exiting Jest: Have you considered 
+using `--detectOpenHandles` to detect 
+async operations that kept running 
+after all tests finished?

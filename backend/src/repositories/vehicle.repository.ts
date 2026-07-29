@@ -1,5 +1,5 @@
 import { prisma } from '../config/db';
-import { CreateVehicleInput } from '../validators/vehicle.schema';
+import { CreateVehicleInput, UpdateVehicleInput } from '../validators/vehicle.schema';
 
 export const create = async (data: CreateVehicleInput) => {
     return await prisma.vehicle.create({ data });
@@ -22,4 +22,14 @@ export const findByFilters = async (filters: any) => {
     }
 
     return await prisma.vehicle.findMany({ where });
+};
+
+// ── Find a single vehicle by primary key (──────────────────────
+export const findById = async (id: number) => {
+    return await prisma.vehicle.findUnique({ where: { id } });
+};
+
+// ── Update a vehicle by primary key ────────────────────────
+export const update = async (id: number, data: UpdateVehicleInput) => {
+    return await prisma.vehicle.update({ where: { id }, data });
 };
