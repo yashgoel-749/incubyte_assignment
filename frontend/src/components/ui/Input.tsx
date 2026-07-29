@@ -12,7 +12,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, helperTe
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
     return (
         <div className="flex flex-col gap-1.5 w-full">
-            {label && <label htmlFor={inputId} className="text-sm font-medium text-slate-700">{label}</label>}
+            {label && <label htmlFor={inputId} className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">{label}</label>}
             <div className="relative flex items-center">
                 {leftAdornment && (
                     <span className="absolute left-3 text-slate-400 pointer-events-none">

@@ -1,37 +1,40 @@
-import apiClient from './api';
-import type { AuthResponse, LoginCredentials, RegisterCredentials } from '../types';
+import type { AuthResponse, LoginCredentials, RegisterCredentials, User } from '../types';
 
-/**
- * authService — thin facade over /auth endpoints.
- * Business logic (dispatching to Redux) lives in components/hooks;
- * this layer is purely responsible for network calls.
- */
+const MOCK_USER: User = {
+    id: 'usr_123',
+    name: 'Alex Rivera',
+    email: 'manager@autocommand.com',
+    role: 'MANAGER',
+    createdAt: new Date().toISOString(),
+};
+
+const MOCK_TOKEN = 'mock.jwt.token.12345';
+
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 const authService = {
-    /**
-     * POST /auth/login
-     * Returns { user, token } on success.
-     */
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        const { data } = await apiClient.post<AuthResponse>('/auth/login', credentials);
-        return data;
+        await delay(1200); // Mock network latency
+        if (credentials.email === 'error@autocommand.com') {
+            throw new Error('Invalid credentials');
+        }
+        return { user: MOCK_USER, token: MOCK_TOKEN };
     },
 
-    /**
-     * POST /auth/register
-     * Returns { user, token } on success.
-     */
     async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-        const { data } = await apiClient.post<AuthResponse>('/auth/register', credentials);
-        return data;
+        await delay(1200);
+        if (credentials.email === 'error@autocommand.com') {
+            throw new Error('Email already in use');
+        }
+        return {
+            user: { ...MOCK_USER, name: credentials.name, email: credentials.email },
+            token: MOCK_TOKEN
+        };
     },
 
-    /**
-     * GET /auth/me
-     * Fetches the currently logged-in user profile.
-     */
     async getProfile(): Promise<AuthResponse['user']> {
-        const { data } = await apiClient.get<AuthResponse['user']>('/auth/me');
-        return data;
+        await delay(500);
+        return MOCK_USER;
     },
 };
 
