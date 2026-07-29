@@ -1,10 +1,10 @@
 ﻿  console.log
-    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
+    Γùç injected env (2) from .env // tip: Γîÿ override existing { override: true }
 
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
   console.log
-    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
+    Γùç injected env (2) from .env // tip: Γîü auth for agents [www.vestauth.com]
 
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
@@ -14,17 +14,17 @@
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
   console.log
-    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
+    Γùç injected env (2) from .env // tip: Γîÿ multiple files { path: ['.env.local', '.env'] }
 
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
-npx : PASS tests/app.test.ts (6.917 s)
+npx : PASS tests/app.test.ts (7.042 s)
 At line:1 char:1
 + npx jest --verbose --no-coverage 2>&1 
 | Out-File -FilePath test_outpu ...
 + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : NotSpecif 
-   ied: (PASS tests/app.test.ts (6.917  
+   ied: (PASS tests/app.test.ts (7.042  
    s):String) [], RemoteException
     + FullyQualifiedErrorId : NativeCom 
    mandError
@@ -32,51 +32,51 @@ At line:1 char:1
   App Integration Tests
     GET /health
       ΓêÜ should return strong 200 OK 
-and { status: "UP" } (68 ms)
+and { status: "UP" } (60 ms)
 
-PASS tests/jwt.middleware.test.ts (7.09 
-s)
+PASS tests/jwt.middleware.test.ts 
+(7.325 s)
   JWT Authentication Middleware
     ΓêÜ should allow access with a 
-valid token and return user payload (19 
+valid token and return user payload (22 
 ms)
     ΓêÜ should reject with 401 when 
 token is invalid (6 ms)
     ΓêÜ should reject with 401 when 
-token is expired (7 ms)
+token is expired (9 ms)
     ΓêÜ should reject with 401 when 
-Authorization header is missing (4 ms)
+Authorization header is missing (7 ms)
 
-PASS tests/auth.test.ts (7.222 s)
+PASS tests/auth.test.ts (7.378 s)
   Auth API - User Registration
     POST /api/auth/register
       ΓêÜ should successfully register 
-a user and return 201 (240 ms)
+a user and return 201 (237 ms)
       ΓêÜ should fail with 400 when 
-email is missing (7 ms)
+email is missing (8 ms)
       ΓêÜ should fail with 400 when 
 password is missing (6 ms)
       ΓêÜ should fail with 400 when 
-email format is invalid (5 ms)
+email format is invalid (7 ms)
       ΓêÜ should fail with 409 when the 
-email is already registered (111 ms)
+email is already registered (117 ms)
 
-PASS tests/login.test.ts (7.338 s)
+PASS tests/login.test.ts (7.532 s)
   Auth API - User Login
     POST /api/auth/login
       ΓêÜ should login successfully and 
-return 200 with a JWT token (121 ms)
+return 200 with a JWT token (129 ms)
       ΓêÜ should fail with 401 when 
-password is wrong (106 ms)
+password is wrong (107 ms)
       ΓêÜ should fail with 404 when 
-user is not found (7 ms)
+user is not found (5 ms)
       ΓêÜ should fail with 400 when 
-email is missing (10 ms)
+email is missing (6 ms)
       ΓêÜ should fail with 400 when 
-password is missing (8 ms)
+password is missing (6 ms)
 
 Test Suites: 4 passed, 4 total
 Tests:       15 passed, 15 total
 Snapshots:   0 total
-Time:        8.342 s
+Time:        8.514 s
 Ran all test suites.
