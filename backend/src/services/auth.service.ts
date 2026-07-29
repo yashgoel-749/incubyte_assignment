@@ -1,39 +1,48 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { findUserByEmail, createUser } from '../models/user.model';
+import { findUserByEmail, createUser } from '../repositories/user.repository';
+import { AppError } from '../errors/AppError';
 
+const SALT_ROUNDS = 10;
+const JWT_EXPIRY = '1h';
+
+/**
+ * Registers a new user.
+ * @throws AppError 409 if email already exists
+ */
 export const registerUser = async (email: string, passwordPlain: string) => {
-    // 1. Check if user exists
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-        throw new Error('Email is already registered');
+        throw new AppError('Email is already registered', 409);
     }
 
-    // 2. Hash password
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(passwordPlain, saltRounds);
-
-    // 3. Create user
+    const passwordHash = await bcrypt.hash(passwordPlain, SALT_ROUNDS);
     const newUser = await createUser(email, passwordHash);
     return newUser;
 };
 
+/**
+ * Authenticates a user and returns a signed JWT.
+ * @throws AppError 404 if user not found
+ * @throws AppError 401 if password does not match
+ */
 export const loginUser = async (email: string, passwordPlain: string) => {
-    // 1. Find user
     const user = await findUserByEmail(email);
     if (!user) {
-        throw Object.assign(new Error('User not found'), { status: 404 });
+        throw new AppError('User not found', 404);
     }
 
-    // 2. Compare password
     const isMatch = await bcrypt.compare(passwordPlain, user.password);
     if (!isMatch) {
-        throw Object.assign(new Error('Invalid credentials'), { status: 401 });
+        throw new AppError('Invalid credentials', 401);
     }
 
-    // 3. Sign JWT
     const secret = process.env.JWT_SECRET || 'dev-secret';
-    const token = jwt.sign({ id: user.id, email: user.email }, secret, { expiresIn: '1h' });
+    const token = jwt.sign(
+        { id: user.id, email: user.email },
+        secret,
+        { expiresIn: JWT_EXPIRY },
+    );
 
     return token;
 };

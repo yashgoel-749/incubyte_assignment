@@ -1,27 +1,26 @@
 import { z } from 'zod';
 
-// Reusable Zod v4 schema for the registration payload
+// ── Shared field definitions ────────────────────────────────────
+const emailField = z
+    .string()
+    .min(1, 'Email is required')
+    .email('Invalid email format');
+
+const passwordField = z
+    .string()
+    .min(1, 'Password is required');
+
+// ── Endpoint schemas ────────────────────────────────────────────
 export const registerSchema = z.object({
-    email: z
-        .string()
-        .min(1, 'Email is required')
-        .email('Invalid email format'),
-    password: z
-        .string()
-        .min(1, 'Password is required'),
+    email: emailField,
+    password: passwordField,
 });
 
-// Login schema – same shape, separate schema for clarity
 export const loginSchema = z.object({
-    email: z
-        .string()
-        .min(1, 'Email is required')
-        .email('Invalid email format'),
-    password: z
-        .string()
-        .min(1, 'Password is required'),
+    email: emailField,
+    password: passwordField,
 });
 
-// Infer TypeScript types from the schemas
+// ── Inferred TypeScript types ───────────────────────────────────
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
