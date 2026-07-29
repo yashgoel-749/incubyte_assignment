@@ -31,3 +31,12 @@ export const updateVehicle = async (id: number, data: UpdateVehicleInput) => {
     }
     return await vehicleRepository.update(id, data);
 };
+
+// ── Delete a vehicle with 404 guard ─────────────────────────────
+export const deleteVehicle = async (id: number) => {
+    const existing = await vehicleRepository.findById(id);
+    if (!existing) {
+        throw new AppError(`Vehicle with id ${id} not found`, 404);
+    }
+    return await vehicleRepository.deleteById(id);
+};

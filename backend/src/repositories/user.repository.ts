@@ -13,11 +13,12 @@ export const findUserByEmail = async (email: string) => {
     return result[0] || null;
 };
 
-export const createUser = async (email: string, passwordHash: string) => {
+export const createUser = async (email: string, passwordHash: string, role: string = 'USER') => {
     const result: any[] = await prisma.$queryRawUnsafe(
-        'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
+        'INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role',
         email,
         passwordHash,
+        role,
     );
     return result[0];
 };

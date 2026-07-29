@@ -8,6 +8,7 @@ import { AppError } from '../errors/AppError';
 export interface AuthPayload {
     id: number;
     email: string;
+    role: string;
 }
 
 declare global {
@@ -42,4 +43,15 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction): 
     } catch {
         next(new AppError('Invalid or expired token', 401));
     }
+};
+
+/**
+ * Middleware to authorize ADMIN users only.
+ * Must be used AFTER authenticate middleware.
+ */
+export const authorizeAdmin = (req: Request, _res: Response, next: NextFunction): void => {
+    if (!req.user || req.user.role !== 'ADMIN') {
+        return next(new AppError('Forbidden: Admins only', 403));
+    }
+    next();
 };

@@ -37,3 +37,18 @@ export const updateVehicle = catchAsync(async (req: Request, res: Response): Pro
         vehicle
     });
 });
+
+// ── Delete a vehicle ───────────────────────────────────────────
+export const deleteVehicle = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id, 10);
+
+    if (isNaN(id)) {
+        throw new AppError('Vehicle id must be a valid integer', 400);
+    }
+
+    await vehicleService.deleteVehicle(id);
+
+    res.status(200).json({
+        message: 'Vehicle deleted successfully'
+    });
+});

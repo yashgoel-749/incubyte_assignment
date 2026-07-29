@@ -10,14 +10,14 @@ const JWT_EXPIRY = '1h';
  * Registers a new user.
  * @throws AppError 409 if email already exists
  */
-export const registerUser = async (email: string, passwordPlain: string) => {
+export const registerUser = async (email: string, passwordPlain: string, role?: string) => {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
         throw new AppError('Email is already registered', 409);
     }
 
     const passwordHash = await bcrypt.hash(passwordPlain, SALT_ROUNDS);
-    const newUser = await createUser(email, passwordHash);
+    const newUser = await createUser(email, passwordHash, role);
     return newUser;
 };
 
@@ -39,7 +39,7 @@ export const loginUser = async (email: string, passwordPlain: string) => {
 
     const secret = process.env.JWT_SECRET || 'dev-secret';
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, role: user.role },
         secret,
         { expiresIn: JWT_EXPIRY },
     );

@@ -16,9 +16,9 @@ if (process.env.NODE_ENV === 'test') {
                 return user ? [user] : [];
             }
             if (text.startsWith('INSERT INTO USERS')) {
-                const newUser = { id: users.length + 1, email: args[0], password: args[1] };
+                const newUser = { id: users.length + 1, email: args[0], password: args[1], role: args[2] || 'USER' };
                 users.push(newUser);
-                return [{ id: newUser.id, email: newUser.email }];
+                return [{ id: newUser.id, email: newUser.email, role: newUser.role }];
             }
             return [];
         },
@@ -54,6 +54,15 @@ if (process.env.NODE_ENV === 'test') {
                 if (idx === -1) throw new Error(`Record with id ${id} not found`);
                 vehicles[idx] = { ...vehicles[idx], ...args.data };
                 return vehicles[idx];
+            },
+            // ── Delete a vehicle ──────────────────────────────────────
+            delete: async (args: any) => {
+                const id = args?.where?.id;
+                const idx = vehicles.findIndex(v => v.id === id);
+                if (idx === -1) throw new Error(`Record with id ${id} not found`);
+                const deleted = vehicles[idx];
+                vehicles.splice(idx, 1);
+                return deleted;
             }
         }
     } as any;

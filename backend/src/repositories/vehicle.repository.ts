@@ -33,3 +33,8 @@ export const findById = async (id: number) => {
 export const update = async (id: number, data: UpdateVehicleInput) => {
     return await prisma.vehicle.update({ where: { id }, data });
 };
+
+// ── Delete a vehicle by primary key ────────────────────────
+export const deleteById = async (id: number) => {
+    return await prisma.vehicle.delete({ where: { id } });
+};

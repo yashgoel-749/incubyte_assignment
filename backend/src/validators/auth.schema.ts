@@ -14,6 +14,7 @@ const passwordField = z
 export const registerSchema = z.object({
     email: emailField,
     password: passwordField,
+    role: z.string().optional(),
 });
 
 export const loginSchema = z.object({

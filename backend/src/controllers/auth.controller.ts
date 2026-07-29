@@ -6,8 +6,8 @@ import { catchAsync } from '../utils/catchAsync';
  * POST /api/auth/register
  */
 export const register = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
-    const newUser = await registerUser(email, password);
+    const { email, password, role } = req.body;
+    const newUser = await registerUser(email, password, role);
 
     res.status(201).json({
         message: 'User registered successfully',
