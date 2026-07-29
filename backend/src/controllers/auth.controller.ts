@@ -1,45 +1,29 @@
 import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.service';
-import { AppError } from '../errors/AppError';
+import { catchAsync } from '../utils/catchAsync';
 
 /**
  * POST /api/auth/register
  */
-export const register = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-        const newUser = await registerUser(email, password);
+export const register = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const { email, password } = req.body;
+    const newUser = await registerUser(email, password);
 
-        res.status(201).json({
-            message: 'User registered successfully',
-            user: { email: newUser.email },
-        });
-    } catch (error) {
-        if (error instanceof AppError) {
-            res.status(error.statusCode).json({ error: error.message });
-            return;
-        }
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+    res.status(201).json({
+        message: 'User registered successfully',
+        user: { email: newUser.email },
+    });
+});
 
 /**
  * POST /api/auth/login
  */
-export const login = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-        const token = await loginUser(email, password);
+export const login = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const { email, password } = req.body;
+    const token = await loginUser(email, password);
 
-        res.status(200).json({ token });
-    } catch (error) {
-        if (error instanceof AppError) {
-            res.status(error.statusCode).json({ error: error.message });
-            return;
-        }
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+    res.status(200).json({ token });
+});
 
 /**
  * GET /api/auth/me

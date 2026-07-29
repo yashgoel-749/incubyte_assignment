@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { AppError } from '../errors/AppError';
 
 /**
  * Extend Express Request to carry the authenticated user payload.
@@ -21,13 +22,14 @@ declare global {
  * Reusable JWT authentication middleware.
  * Extracts the Bearer token from the Authorization header,
  * verifies it, and attaches the decoded payload to req.user.
+ *
+ * Errors are forwarded to the centralized error handler via next().
  */
-export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
+export const authenticate = (req: Request, _res: Response, next: NextFunction): void => {
     const header = req.headers.authorization;
 
     if (!header || !header.startsWith('Bearer ')) {
-        res.status(401).json({ error: 'Authentication token is required' });
-        return;
+        return next(new AppError('Authentication token is required', 401));
     }
 
     const token = header.split(' ')[1];
@@ -38,6 +40,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
         req.user = decoded;
         next();
     } catch {
-        res.status(401).json({ error: 'Invalid or expired token' });
+        next(new AppError('Invalid or expired token', 401));
     }
 };
