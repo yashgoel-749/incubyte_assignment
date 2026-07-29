@@ -68,3 +68,19 @@ export const purchaseVehicle = catchAsync(async (req: Request, res: Response): P
         vehicle,
     });
 });
+
+// ── Restock a vehicle ──────────────────────────────────────────
+export const restockVehicle = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id, 10);
+
+    if (isNaN(id)) {
+        throw new AppError('Vehicle id must be a valid integer', 400);
+    }
+
+    const vehicle = await vehicleService.restockVehicle(id);
+
+    res.status(200).json({
+        message: 'Vehicle restocked successfully',
+        vehicle,
+    });
+});

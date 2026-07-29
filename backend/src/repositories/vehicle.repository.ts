@@ -57,3 +57,17 @@ export const purchase = async (id: number) => {
         });
     });
 };
+
+// ── Restock a vehicle (Atomic) ─────────────────────────────
+export const restock = async (id: number) => {
+    return await prisma.$transaction(async (tx: any) => {
+        const vehicle = await tx.vehicle.findUnique({ where: { id } });
+        if (!vehicle) {
+            throw new AppError(`Vehicle with id ${id} not found`, 404);
+        }
+        return await tx.vehicle.update({
+            where: { id },
+            data: { status: 'AVAILABLE' },
+        });
+    });
+};

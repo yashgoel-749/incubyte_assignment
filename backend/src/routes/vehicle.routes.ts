@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createVehicle, getVehicles, searchVehicles, updateVehicle, deleteVehicle, purchaseVehicle } from '../controllers/vehicle.controller';
+import { createVehicle, getVehicles, searchVehicles, updateVehicle, deleteVehicle, purchaseVehicle, restockVehicle } from '../controllers/vehicle.controller';
 import { validateVehicle, validateUpdateVehicle } from '../middlewares/vehicle.validator';
 import { authenticate, authorizeAdmin } from '../middlewares/authenticate';
 
@@ -11,5 +11,6 @@ router.get('/', authenticate, getVehicles);
 router.put('/:id', authenticate, validateUpdateVehicle, updateVehicle);
 router.delete('/:id', authenticate, authorizeAdmin, deleteVehicle);
 router.post('/:id/purchase', authenticate, purchaseVehicle);
+router.post('/:id/restock', authenticate, authorizeAdmin, restockVehicle);
 
 export default router;
