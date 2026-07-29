@@ -7,6 +7,7 @@ let prismaInstance: any;
 if (process.env.NODE_ENV === 'test') {
     // Isolated Mock
     const users: any[] = [];
+    const vehicles: any[] = [];
     prismaInstance = {
         $queryRawUnsafe: async (query: string, ...args: any[]) => {
             const text = query.toUpperCase();
@@ -20,6 +21,13 @@ if (process.env.NODE_ENV === 'test') {
                 return [{ id: newUser.id, email: newUser.email }];
             }
             return [];
+        },
+        vehicle: {
+            create: async (args: any) => {
+                const newVehicle = { id: vehicles.length + 1, ...args.data };
+                vehicles.push(newVehicle);
+                return newVehicle;
+            }
         }
     } as any;
 } else {

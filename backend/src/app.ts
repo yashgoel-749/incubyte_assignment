@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes';
+import vehicleRoutes from './routes/vehicle.routes';
 import { errorHandler } from './middlewares/errorHandler';
 
 const app: Application = express();
@@ -16,6 +17,7 @@ app.get('/health', (req: Request, res: Response) => {
 
 // ── API Routes ──────────────────────────────────────────────────
 app.use('/api/auth', authRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 
 // ── Centralized Error Handler (must be registered LAST) ─────────
 app.use(errorHandler);
