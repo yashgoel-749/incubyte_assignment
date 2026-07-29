@@ -15,3 +15,8 @@ export const getVehicles = catchAsync(async (req: Request, res: Response): Promi
     const vehicles = await vehicleService.getVehicles();
     res.status(200).json({ vehicles });
 });
+
+export const searchVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const vehicles = await vehicleService.searchVehicles(req.query);
+    res.status(200).json({ vehicles });
+});

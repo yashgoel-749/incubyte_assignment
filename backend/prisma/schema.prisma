@@ -20,7 +20,8 @@ model Vehicle {
   id     Int    @id @default(autoincrement())
   make   String
   model  String
-  year   Int
-  price  Float
-  status String @default("AVAILABLE")
+  year     Int
+  price    Float
+  status   String  @default("AVAILABLE")
+  category String?
 }

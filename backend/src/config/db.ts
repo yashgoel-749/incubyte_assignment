@@ -28,8 +28,19 @@ if (process.env.NODE_ENV === 'test') {
                 vehicles.push(newVehicle);
                 return newVehicle;
             },
-            findMany: async () => {
-                return vehicles;
+            findMany: async (args: any) => {
+                let result = vehicles;
+                if (args && args.where) {
+                    const w = args.where;
+                    if (w.make) result = result.filter(v => v.make === w.make);
+                    if (w.model) result = result.filter(v => v.model === w.model);
+                    if (w.category) result = result.filter(v => v.category === w.category);
+                    if (w.price) {
+                        if (w.price.gte !== undefined) result = result.filter(v => v.price >= w.price.gte);
+                        if (w.price.lte !== undefined) result = result.filter(v => v.price <= w.price.lte);
+                    }
+                }
+                return result;
             }
         }
     } as any;

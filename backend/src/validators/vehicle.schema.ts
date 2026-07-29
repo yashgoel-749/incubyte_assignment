@@ -5,7 +5,8 @@ export const createVehicleSchema = z.object({
     model: z.string().min(1, 'Model is required'),
     year: z.number().int().positive('Year must be valid'),
     price: z.number().positive('Price must be positive'),
-    status: z.string().optional().default('AVAILABLE')
+    status: z.string().optional().default('AVAILABLE'),
+    category: z.string().optional()
 });
 
 export type CreateVehicleInput = z.infer<typeof createVehicleSchema>;
