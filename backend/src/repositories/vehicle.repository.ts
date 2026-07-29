@@ -1,5 +1,6 @@
 import { prisma } from '../config/db';
 import { CreateVehicleInput, UpdateVehicleInput } from '../validators/vehicle.schema';
+import { AppError } from '../errors/AppError';
 
 export const create = async (data: CreateVehicleInput) => {
     return await prisma.vehicle.create({ data });
@@ -35,6 +36,24 @@ export const update = async (id: number, data: UpdateVehicleInput) => {
 };
 
 // ── Delete a vehicle by primary key ────────────────────────
+// ── Delete a vehicle by primary key ────────────────────────
 export const deleteById = async (id: number) => {
     return await prisma.vehicle.delete({ where: { id } });
+};
+
+// ── Purchase a vehicle (Atomic) ────────────────────────────
+export const purchase = async (id: number) => {
+    return await prisma.$transaction(async (tx: any) => {
+        const vehicle = await tx.vehicle.findUnique({ where: { id } });
+        if (!vehicle) {
+            throw new AppError(`Vehicle with id ${id} not found`, 404);
+        }
+        if (vehicle.status === 'SOLD') {
+            throw new AppError('Vehicle is out of stock', 400);
+        }
+        return await tx.vehicle.update({
+            where: { id },
+            data: { status: 'SOLD' },
+        });
+    });
 };

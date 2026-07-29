@@ -40,3 +40,8 @@ export const deleteVehicle = async (id: number) => {
     }
     return await vehicleRepository.deleteById(id);
 };
+
+// ── Purchase a vehicle ──────────────────────────────────────────
+export const purchaseVehicle = async (id: number) => {
+    return await vehicleRepository.purchase(id);
+};

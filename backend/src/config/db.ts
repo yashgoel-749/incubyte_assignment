@@ -9,6 +9,9 @@ if (process.env.NODE_ENV === 'test') {
     const users: any[] = [];
     const vehicles: any[] = [];
     prismaInstance = {
+        $transaction: async (cb: any) => {
+            return await cb(prismaInstance);
+        },
         $queryRawUnsafe: async (query: string, ...args: any[]) => {
             const text = query.toUpperCase();
             if (text.startsWith('SELECT * FROM USERS')) {
