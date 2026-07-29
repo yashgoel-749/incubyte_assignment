@@ -4,8 +4,8 @@
  * Format a number as a USD currency string.
  * e.g. 85000 → "$85,000"
  */
-export function formatCurrency(amount: number, currency = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
+export function formatCurrency(amount: number, currency = 'INR'): string {
+    return new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency,
         maximumFractionDigits: 0,
@@ -14,12 +14,12 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
 
 /**
  * Format a large number with compact notation.
- * e.g. 12400000 → "$12.4M"
+ * e.g. 12400000 → "₹1.2Cr"
  */
 export function formatCompactCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'INR',
         notation: 'compact',
     }).format(amount);
 }

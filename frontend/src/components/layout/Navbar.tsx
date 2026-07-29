@@ -31,14 +31,14 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
                 <button className="flex items-center gap-3 text-left">
                     <div className="hidden sm:block">
-                        <p className="text-sm font-semibold text-slate-900 leading-none">{user?.name || 'Alex Rivera'}</p>
-                        <p className="text-xs text-slate-500 mt-1">{user?.role || 'General Manager'}</p>
+                        <p className="text-sm font-semibold text-slate-900 leading-none">{user?.name || 'Aarav Sharma'}</p>
+                        <p className="text-xs text-slate-500 mt-1">{user?.role || 'Dealership Manager'}</p>
                     </div>
                     {user?.avatarUrl ? (
                         <img src={user.avatarUrl} alt="Avatar" className="h-9 w-9 rounded-full object-cover" />
                     ) : (
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">
-                            {getInitials(user?.name || 'Alex Rivera')}
+                            {getInitials(user?.name || 'Aarav Sharma')}
                         </div>
                     )}
                 </button>
