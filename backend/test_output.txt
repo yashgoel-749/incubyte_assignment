@@ -1,154 +1,82 @@
 ﻿  console.log
-    Γùç injected env (2) from .env // tip: Γîü auth for agents [www.vestauth.com]
+    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
 
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
-npx : FAIL tests/jwt.middleware.test.ts
+  console.log
+    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    Γùç injected env (2) from .env // tip: Γîÿ suppress logs { quiet: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+  console.log
+    Γùç injected env (2) from .env // tip: Γùê secrets for agents [www.dotenvx.com]
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+npx : PASS tests/app.test.ts (6.917 s)
 At line:1 char:1
-+ npx jest tests/jwt.middleware.test.ts 
---verbose --no-coverage 2>&1 |  ...
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ npx jest --verbose --no-coverage 2>&1 
+| Out-File -FilePath test_outpu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : NotSpecif 
-   ied: (FAIL tests/jwt.middleware.tes  
-  t.ts:String) [], RemoteException
+   ied: (PASS tests/app.test.ts (6.917  
+   s):String) [], RemoteException
     + FullyQualifiedErrorId : NativeCom 
    mandError
  
+  App Integration Tests
+    GET /health
+      ΓêÜ should return strong 200 OK 
+and { status: "UP" } (68 ms)
+
+PASS tests/jwt.middleware.test.ts (7.09 
+s)
   JWT Authentication Middleware
-    ├ù should allow access with a valid 
-token and return user payload (16 ms)
-    ├ù should reject with 401 when 
+    ΓêÜ should allow access with a 
+valid token and return user payload (19 
+ms)
+    ΓêÜ should reject with 401 when 
 token is invalid (6 ms)
-    ├ù should reject with 401 when 
-token is expired (9 ms)
-    ├ù should reject with 401 when 
-Authorization header is missing (6 ms)
+    ΓêÜ should reject with 401 when 
+token is expired (7 ms)
+    ΓêÜ should reject with 401 when 
+Authorization header is missing (4 ms)
 
-  ΓùÅ JWT Authentication Middleware ΓÇ║ 
-should allow access with a valid token 
-and return user payload
+PASS tests/auth.test.ts (7.222 s)
+  Auth API - User Registration
+    POST /api/auth/register
+      ΓêÜ should successfully register 
+a user and return 201 (240 ms)
+      ΓêÜ should fail with 400 when 
+email is missing (7 ms)
+      ΓêÜ should fail with 400 when 
+password is missing (6 ms)
+      ΓêÜ should fail with 400 when 
+email format is invalid (5 ms)
+      ΓêÜ should fail with 409 when the 
+email is already registered (111 ms)
 
-    expect(received).toBe(expected) // 
-Object.is equality
+PASS tests/login.test.ts (7.338 s)
+  Auth API - User Login
+    POST /api/auth/login
+      ΓêÜ should login successfully and 
+return 200 with a JWT token (121 ms)
+      ΓêÜ should fail with 401 when 
+password is wrong (106 ms)
+      ΓêÜ should fail with 404 when 
+user is not found (7 ms)
+      ΓêÜ should fail with 400 when 
+email is missing (10 ms)
+      ΓêÜ should fail with 400 when 
+password is missing (8 ms)
 
-    Expected: 200
-    Received: 404
-
-    [0m [90m 25 |[39m             [3
-3m.[39m[36mset[39m([32m'Authorizatio
-n'[39m[33m,[39m [32m`Bearer 
-${validToken}`[39m)[33m;[39m
-     [90m 26 |[39m
-    [31m[1m>[22m[39m[90m 27 |[39m 
-        expect(response[33m.[39mstatus
-)[33m.[39mtoBe([35m200[39m)[33m;[3
-9m
-     [90m    |[39m                    
-             [31m[1m^[22m[39m
-     [90m 28 |[39m         expect(resp
-onse[33m.[39mbody)[33m.[39mtoHavePro
-perty([32m'email'[39m[33m,[39m [32m
-'jwt-test@dealership.com'[39m)[33m;[3
-9m
-     [90m 29 |[39m     })[33m;[39m
-     [90m 30 |[39m[0m
-
-      at Object.<anonymous> 
-(tests/jwt.middleware.test.ts:27:33)
-
-  ΓùÅ JWT Authentication Middleware ΓÇ║ 
-should reject with 401 when token is 
-invalid
-
-    expect(received).toBe(expected) // 
-Object.is equality
-
-    Expected: 401
-    Received: 404
-
-    [0m [90m 34 |[39m             [3
-3m.[39m[36mset[39m([32m'Authorizatio
-n'[39m[33m,[39m [32m'Bearer 
-invalid.token.here'[39m)[33m;[39m
-     [90m 35 |[39m
-    [31m[1m>[22m[39m[90m 36 |[39m 
-        expect(response[33m.[39mstatus
-)[33m.[39mtoBe([35m401[39m)[33m;[3
-9m
-     [90m    |[39m                    
-             [31m[1m^[22m[39m
-     [90m 37 |[39m         expect(resp
-onse[33m.[39mbody)[33m.[39mtoHavePro
-perty([32m'error'[39m)[33m;[39m
-     [90m 38 |[39m     })[33m;[39m
-     [90m 39 |[39m[0m
-
-      at Object.<anonymous> 
-(tests/jwt.middleware.test.ts:36:33)
-
-  ΓùÅ JWT Authentication Middleware ΓÇ║ 
-should reject with 401 when token is 
-expired
-
-    expect(received).toBe(expected) // 
-Object.is equality
-
-    Expected: 401
-    Received: 404
-
-    [0m [90m 48 |[39m             [3
-3m.[39m[36mset[39m([32m'Authorizatio
-n'[39m[33m,[39m [32m`Bearer 
-${expiredToken}`[39m)[33m;[39m
-     [90m 49 |[39m
-    [31m[1m>[22m[39m[90m 50 |[39m 
-        expect(response[33m.[39mstatus
-)[33m.[39mtoBe([35m401[39m)[33m;[3
-9m
-     [90m    |[39m                    
-             [31m[1m^[22m[39m
-     [90m 51 |[39m         expect(resp
-onse[33m.[39mbody)[33m.[39mtoHavePro
-perty([32m'error'[39m)[33m;[39m
-     [90m 52 |[39m     })[33m;[39m
-     [90m 53 |[39m[0m
-
-      at Object.<anonymous> 
-(tests/jwt.middleware.test.ts:50:33)
-
-  ΓùÅ JWT Authentication Middleware ΓÇ║ 
-should reject with 401 when 
-Authorization header is missing
-
-    expect(received).toBe(expected) // 
-Object.is equality
-
-    Expected: 401
-    Received: 404
-
-    [0m [90m 56 |[39m             [3
-3m.[39m[36mget[39m(protectedEndpoint)
-[33m;[39m
-     [90m 57 |[39m
-    [31m[1m>[22m[39m[90m 58 |[39m 
-        expect(response[33m.[39mstatus
-)[33m.[39mtoBe([35m401[39m)[33m;[3
-9m
-     [90m    |[39m                    
-             [31m[1m^[22m[39m
-     [90m 59 |[39m         expect(resp
-onse[33m.[39mbody)[33m.[39mtoHavePro
-perty([32m'error'[39m)[33m;[39m
-     [90m 60 |[39m     })[33m;[39m
-     [90m 61 |[39m })[33m;[39m[0m
-
-      at Object.<anonymous> 
-(tests/jwt.middleware.test.ts:58:33)
-
-Test Suites: 1 failed, 1 total
-Tests:       4 failed, 4 total
+Test Suites: 4 passed, 4 total
+Tests:       15 passed, 15 total
 Snapshots:   0 total
-Time:        4.033 s, estimated 16 s
-Ran all test suites matching 
-/tests\\jwt.middleware.test.ts/i.
+Time:        8.342 s
+Ran all test suites.

@@ -40,3 +40,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+/**
+ * GET /api/auth/me
+ */
+export const getMe = (req: Request, res: Response): void => {
+    res.status(200).json(req.user);
+};
