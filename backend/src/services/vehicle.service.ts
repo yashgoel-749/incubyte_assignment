@@ -4,3 +4,7 @@ import { CreateVehicleInput } from '../validators/vehicle.schema';
 export const createVehicle = async (data: CreateVehicleInput) => {
     return await vehicleRepository.create(data);
 };
+
+export const getVehicles = async () => {
+    return await vehicleRepository.findAll();
+};

@@ -27,6 +27,9 @@ if (process.env.NODE_ENV === 'test') {
                 const newVehicle = { id: vehicles.length + 1, ...args.data };
                 vehicles.push(newVehicle);
                 return newVehicle;
+            },
+            findMany: async () => {
+                return vehicles;
             }
         }
     } as any;

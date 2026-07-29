@@ -10,3 +10,8 @@ export const createVehicle = catchAsync(async (req: Request, res: Response): Pro
         vehicle
     });
 });
+
+export const getVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const vehicles = await vehicleService.getVehicles();
+    res.status(200).json({ vehicles });
+});
