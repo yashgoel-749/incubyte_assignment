@@ -13,25 +13,15 @@ const paddingMap = {
     lg: 'p-6',
 };
 
-export default function Card({
-    children,
-    padding = 'md',
-    hoverable = false,
-    className = '',
-    ...rest
-}: CardProps) {
+export default function Card({ children, padding = 'md', hoverable = false, className = '', ...rest }: CardProps) {
     return (
         <div
             className={[
-                'glass-card',
+                'bg-white border border-slate-200 rounded-xl shadow-sm',
                 paddingMap[padding],
-                hoverable
-                    ? 'hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-900/10 cursor-pointer transition-all duration-200'
-                    : '',
+                hoverable ? 'hover:shadow-md hover:border-blue-200 cursor-pointer transition-all duration-200' : '',
                 className,
-            ]
-                .filter(Boolean)
-                .join(' ')}
+            ].filter(Boolean).join(' ')}
             {...rest}
         >
             {children}

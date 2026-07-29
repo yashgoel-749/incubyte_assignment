@@ -1,46 +1,31 @@
-type BadgeVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+type BadgeVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'primary';
 
 interface BadgeProps {
     children: React.ReactNode;
     variant?: BadgeVariant;
-    dot?: boolean;
     className?: string;
+    size?: 'sm' | 'md';
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-    success: 'bg-green-500/15 text-green-400 border-green-500/30',
-    warning: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    danger: 'bg-red-500/15 text-red-400 border-red-500/30',
-    info: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-    neutral: 'bg-slate-500/15 text-slate-400 border-slate-500/30',
+    success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    warning: 'bg-amber-50 text-amber-700 border-amber-200',
+    danger: 'bg-red-50 text-red-700 border-red-200',
+    info: 'bg-sky-50 text-sky-700 border-sky-200',
+    neutral: 'bg-slate-100 text-slate-700 border-slate-200',
+    primary: 'bg-blue-600 text-white border-blue-600 shadow-sm', // For highlighting tags in the screenshot
 };
 
-const dotStyles: Record<BadgeVariant, string> = {
-    success: 'bg-green-400',
-    warning: 'bg-amber-400',
-    danger: 'bg-red-400',
-    info: 'bg-blue-400',
-    neutral: 'bg-slate-400',
-};
-
-export default function Badge({
-    children,
-    variant = 'neutral',
-    dot = false,
-    className = '',
-}: BadgeProps) {
+export default function Badge({ children, variant = 'neutral', size = 'sm', className = '' }: BadgeProps) {
     return (
         <span
             className={[
-                'inline-flex items-center gap-1.5 px-2 py-0.5',
-                'text-xs font-medium rounded-full border',
+                'inline-flex items-center justify-center font-semibold border',
+                size === 'sm' ? 'px-2 py-0.5 text-[10px] rounded' : 'px-2.5 py-1 text-xs rounded-md',
                 variantStyles[variant],
                 className,
             ].join(' ')}
         >
-            {dot && (
-                <span className={`h-1.5 w-1.5 rounded-full ${dotStyles[variant]}`} />
-            )}
             {children}
         </span>
     );

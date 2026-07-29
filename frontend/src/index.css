@@ -1,81 +1,72 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens ─────────────────────────────────────────────── */
 @theme {
-  /* Brand colours extracted from the AutoCommand screenshot */
-  --color-brand-50:  #eff6ff;
+  /* Colors matching the light mode screenshot */
+  --color-brand-50: #eff6ff;
   --color-brand-100: #dbeafe;
-  --color-brand-400: #60a5fa;
   --color-brand-500: #3b82f6;
   --color-brand-600: #2563eb;
   --color-brand-700: #1d4ed8;
 
-  /* Surface (dark-mode shell) */
-  --color-surface-900: #0f1117;
-  --color-surface-800: #161b27;
-  --color-surface-700: #1e2535;
-  --color-surface-600: #252d3d;
-  --color-surface-500: #2e3850;
+  /* Surfaces */
+  --color-surface-50: #f8fafc;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-white: #ffffff;
 
   /* Text */
-  --color-text-primary:   #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted:     #64748b;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
 
   /* Accents */
-  --color-success: #22c55e;
+  --color-success: #10b981;
   --color-warning: #f59e0b;
-  --color-danger:  #ef4444;
+  --color-danger: #ef4444;
 
-  /* Sidebar width */
   --sidebar-width: 16rem;
-
-  /* Border radius */
   --radius-card: 0.75rem;
-
-  /* Font */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* ─── Base ───────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  background-color: var(--color-surface-900);
+  background-color: var(--color-surface-100);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Scrollbar ──────────────────────────────────────────────────── */
-::-webkit-scrollbar          { width: 6px; height: 6px; }
-::-webkit-scrollbar-track    { background: var(--color-surface-800); }
-::-webkit-scrollbar-thumb    { background: var(--color-surface-500); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-brand-600); }
-
-/* ─── Smooth transitions everywhere ─────────────────────────────── */
-a, button { transition: all 0.2s ease; }
-
-/* ─── Utility: Glass card ────────────────────────────────────────── */
-.glass-card {
-  background: rgba(30, 37, 53, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-card);
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-/* ─── Utility: Animated gradient text ───────────────────────────── */
-.gradient-text {
-  background: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* ─── Sidebar transition ─────────────────────────────────────────── */
-.sidebar-enter   { transform: translateX(-100%); }
-.sidebar-entered { transform: translateX(0);    transition: transform 0.3s ease; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-200);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-500);
+}
+
+a,
+button {
+  transition: all 0.2s ease;
+}
