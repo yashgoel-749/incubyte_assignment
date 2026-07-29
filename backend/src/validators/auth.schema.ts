@@ -11,5 +11,17 @@ export const registerSchema = z.object({
         .min(1, 'Password is required'),
 });
 
-// Infer the TypeScript type from the schema
+// Login schema – same shape, separate schema for clarity
+export const loginSchema = z.object({
+    email: z
+        .string()
+        .min(1, 'Email is required')
+        .email('Invalid email format'),
+    password: z
+        .string()
+        .min(1, 'Password is required'),
+});
+
+// Infer TypeScript types from the schemas
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;

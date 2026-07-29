@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser } from '../services/auth.service';
+import { registerUser, loginUser } from '../services/auth.service';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -20,5 +20,16 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+export const login = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { email, password } = req.body;
+        const token = await loginUser(email, password);
+        res.status(200).json({ token });
+    } catch (error: any) {
+        const status = error.status || 500;
+        res.status(status).json({ error: error.message });
     }
 };
