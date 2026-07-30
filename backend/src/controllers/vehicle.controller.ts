@@ -30,6 +30,17 @@ export const getVehicles = catchAsync(async (req: Request, res: Response): Promi
     });
 });
 
+export const getVehicleById = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id, 10);
+
+    if (isNaN(id)) {
+        throw new AppError('Vehicle id must be a valid integer', 400);
+    }
+
+    const vehicle = await vehicleService.getVehicleById(id);
+    res.status(200).json(vehicle);
+});
+
 export const searchVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const vehicles = await vehicleService.searchVehicles(req.query);
     res.status(200).json({ vehicles });

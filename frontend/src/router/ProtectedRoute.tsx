@@ -5,7 +5,7 @@ import { Spinner } from '../components/ui';
 
 interface ProtectedRouteProps {
     /** If provided, only users with one of these roles can access the route */
-    allowedRoles?: Array<'ADMIN' | 'MANAGER' | 'SALES'>;
+    allowedRoles?: Array<'ADMIN' | 'USER'>;
 }
 
 /**

@@ -60,7 +60,7 @@ describe('RegisterPage', () => {
         id: 'usr_001',
         name: 'Alice Johnson',
         email: 'alice@example.com',
-        role: 'MANAGER',
+        role: 'ADMIN',
         createdAt: '2024-01-01T00:00:00.000Z',
       },
       token: 'token-123',
@@ -72,6 +72,7 @@ describe('RegisterPage', () => {
     await user.type(screen.getByLabelText(/full name/i), 'Alice Johnson');
     await user.type(screen.getByLabelText(/email address/i), 'alice@example.com');
     await user.type(screen.getByLabelText(/password/i), 'strongpassword');
+    await user.click(screen.getByLabelText(/admin/i));
     await user.click(screen.getByRole('button', { name: /create account/i }));
 
     await waitFor(() =>
@@ -79,6 +80,7 @@ describe('RegisterPage', () => {
         name: 'Alice Johnson',
         email: 'alice@example.com',
         password: 'strongpassword',
+        role: 'ADMIN',
       })
     );
   });

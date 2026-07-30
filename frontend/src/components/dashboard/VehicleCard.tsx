@@ -4,7 +4,7 @@ import { formatCurrency } from '../../utils/formatters';
 import { type VehicleStatus } from '../../types';
 import { useState } from 'react';
 import vehicleService from '../../services/vehicleService';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAuth } from '../../hooks';
 import { updateVehicle } from '../../store/slices/vehicleSlice';
 
 interface VehicleCardData {
@@ -21,6 +21,7 @@ interface VehicleCardData {
 }
 
 interface VehicleCardProps {
+    id?: string;
     vehicle?: VehicleCardData;
     make?: string;
     model?: string;
@@ -52,6 +53,8 @@ export default function VehicleCard(props: VehicleCardProps) {
     } = vehicle;
 
     const dispatch = useAppDispatch();
+    const { user } = useAuth();
+    const isAdmin = user?.role === 'ADMIN';
 
     // Inline purchase flow state
     const [isPurchasing, setIsPurchasing] = useState(false);
@@ -177,8 +180,12 @@ export default function VehicleCard(props: VehicleCardProps) {
                     ) : (
                         <div className="flex items-center gap-2">
                             <Button variant="primary" size="sm" className="flex-1" onClick={handlePurchaseClick}>Purchase</Button>
-                            <Button variant="outline" size="sm" onClick={props.onEdit}>Edit</Button>
-                            <Button variant="outline" size="sm" onClick={props.onDelete}>Delete</Button>
+                            {isAdmin && (
+                                <>
+                                    <Button variant="outline" size="sm" onClick={props.onEdit}>Edit</Button>
+                                    <Button variant="outline" size="sm" onClick={props.onDelete}>Delete</Button>
+                                </>
+                            )}
                         </div>
                     )}
                 </div>

@@ -5,6 +5,15 @@ import { AppError } from '../errors/AppError';
 
 const SALT_ROUNDS = 10;
 const JWT_EXPIRY = '1h';
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
+
+const signToken = (user: { id: number; email: string; role: string }) => {
+    return jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: JWT_EXPIRY },
+    );
+};
 
 /**
  * Registers a new user.
@@ -18,11 +27,14 @@ export const registerUser = async (email: string, passwordPlain: string, role?: 
 
     const passwordHash = await bcrypt.hash(passwordPlain, SALT_ROUNDS);
     const newUser = await createUser(email, passwordHash, role);
-    return newUser;
+    return {
+        user: { id: newUser.id, email: newUser.email, role: newUser.role },
+        token: signToken(newUser),
+    };
 };
 
 /**
- * Authenticates a user and returns a signed JWT.
+ * Authenticates a user and returns a signed JWT along with user details.
  * @throws AppError 404 if user not found
  * @throws AppError 401 if password does not match
  */
@@ -37,12 +49,9 @@ export const loginUser = async (email: string, passwordPlain: string) => {
         throw new AppError('Invalid credentials', 401);
     }
 
-    const secret = process.env.JWT_SECRET || 'dev-secret';
-    const token = jwt.sign(
-        { id: user.id, email: user.email, role: user.role },
-        secret,
-        { expiresIn: JWT_EXPIRY },
-    );
-
-    return token;
+    const token = signToken(user);
+    return {
+        user: { id: user.id, email: user.email, role: user.role },
+        token,
+    };
 };

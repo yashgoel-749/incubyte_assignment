@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -13,6 +13,7 @@ const registerSchema = z.object({
     name: z.string().min(1, 'Full name is required'),
     email: z.string().min(1, 'Email is required').email('Enter a valid email address'),
     password: z.string().min(1, 'Password is required').min(8, 'Password must be at least 8 characters'),
+    role: z.enum(['USER', 'ADMIN']).optional(),
 });
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -22,13 +23,16 @@ export default function RegisterPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const [searchParams] = useSearchParams();
+    const defaultRole = searchParams.get('role') === 'ADMIN' ? 'ADMIN' : 'USER';
+
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<RegisterFormInputs>({
         resolver: zodResolver(registerSchema),
-        defaultValues: { name: '', email: '', password: '' },
+        defaultValues: { name: '', email: '', password: '', role: defaultRole },
     });
 
     const onSubmit = async (data: RegisterFormInputs) => {
@@ -98,6 +102,32 @@ export default function RegisterPage() {
                     error={errors.password?.message}
                     {...register('password')}
                 />
+
+                <div className="space-y-2">
+                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                        Account Type
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <label className="cursor-pointer rounded-2xl border p-3 text-sm font-medium text-slate-700 transition-colors hover:border-emerald-300">
+                            <input
+                                type="radio"
+                                value="USER"
+                                {...register('role')}
+                                className="mr-2 h-4 w-4 text-emerald-600"
+                            />
+                            User
+                        </label>
+                        <label className="cursor-pointer rounded-2xl border p-3 text-sm font-medium text-slate-700 transition-colors hover:border-emerald-300">
+                            <input
+                                type="radio"
+                                value="ADMIN"
+                                {...register('role')}
+                                className="mr-2 h-4 w-4 text-emerald-600"
+                            />
+                            Admin
+                        </label>
+                    </div>
+                </div>
 
                 <Button type="submit" variant="primary" size="lg" isLoading={isSubmitting} className="w-full mt-2 py-3 rounded-xl border border-transparent">
                     {isSubmitting ? 'Creating Account...' : 'Create Account'}

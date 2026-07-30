@@ -22,7 +22,7 @@ const navItems: NavItem[] = [
 ];
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose?: () => void }) {
-    const { handleLogout } = useAuth();
+    const { user, handleLogout } = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -47,22 +47,35 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose?
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-                    {navItems.map((item) => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            onClick={onClose}
-                            className={({ isActive }) => [
-                                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                                isActive
-                                    ? 'bg-emerald-50 text-emerald-700'
-                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                            ].join(' ')}
-                        >
-                            <span className="shrink-0">{item.icon}</span>
-                            {item.label}
-                        </NavLink>
-                    ))}
+                    {navItems
+                        .filter(item => {
+                            if (user?.role === 'USER') {
+                                const hiddenRoutes: string[] = [
+                                    ROUTES.ADD_VEHICLE,
+                                    ROUTES.INVENTORY,
+                                    ROUTES.PURCHASES,
+                                    ROUTES.SETTINGS,
+                                ];
+                                return !hiddenRoutes.includes(item.path);
+                            }
+                            return true;
+                        })
+                        .map((item) => (
+                            <NavLink
+                                key={item.path}
+                                to={item.path}
+                                onClick={onClose}
+                                className={({ isActive }) => [
+                                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                                    isActive
+                                        ? 'bg-emerald-50 text-emerald-700'
+                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ].join(' ')}
+                            >
+                                <span className="shrink-0">{item.icon}</span>
+                                {item.label}
+                            </NavLink>
+                        ))}
                 </nav>
 
                 <div className="p-4 border-t border-slate-200">

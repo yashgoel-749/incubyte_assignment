@@ -19,6 +19,7 @@ const InventoryPage = lazy(() => import('../pages/inventory/InventoryPage'));
 const PurchasesPage = lazy(() => import('../pages/purchases/PurchasesPage'));
 const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'));
 const SettingsPage = lazy(() => import('../pages/settings/SettingsPage'));
+const EditVehiclePage = lazy(() => import('../pages/vehicles/EditVehiclePage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 // ─── Suspense fallback ────────────────────────────────────────────────────
@@ -85,14 +86,46 @@ const router = createBrowserRouter([
                         ),
                     },
                     {
-                        // Admin / Manager only
-                        element: <ProtectedRoute allowedRoles={['ADMIN', 'MANAGER']} />,
+                        // Admin only
+                        element: <ProtectedRoute allowedRoles={['ADMIN']} />,
                         children: [
                             {
                                 path: ROUTES.ADD_VEHICLE,
                                 element: (
                                     <Suspense fallback={<PageLoader />}>
                                         <AddVehiclePage />
+                                    </Suspense>
+                                ),
+                            },
+                            {
+                                path: ROUTES.EDIT_VEHICLE,
+                                element: (
+                                    <Suspense fallback={<PageLoader />}>
+                                        <EditVehiclePage />
+                                    </Suspense>
+                                ),
+                            },
+                            {
+                                path: ROUTES.INVENTORY,
+                                element: (
+                                    <Suspense fallback={<PageLoader />}>
+                                        <InventoryPage />
+                                    </Suspense>
+                                ),
+                            },
+                            {
+                                path: ROUTES.PURCHASES,
+                                element: (
+                                    <Suspense fallback={<PageLoader />}>
+                                        <PurchasesPage />
+                                    </Suspense>
+                                ),
+                            },
+                            {
+                                path: ROUTES.SETTINGS,
+                                element: (
+                                    <Suspense fallback={<PageLoader />}>
+                                        <SettingsPage />
                                     </Suspense>
                                 ),
                             },
@@ -107,34 +140,10 @@ const router = createBrowserRouter([
                         ),
                     },
                     {
-                        path: ROUTES.INVENTORY,
-                        element: (
-                            <Suspense fallback={<PageLoader />}>
-                                <InventoryPage />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: ROUTES.PURCHASES,
-                        element: (
-                            <Suspense fallback={<PageLoader />}>
-                                <PurchasesPage />
-                            </Suspense>
-                        ),
-                    },
-                    {
                         path: ROUTES.PROFILE,
                         element: (
                             <Suspense fallback={<PageLoader />}>
                                 <ProfilePage />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: ROUTES.SETTINGS,
-                        element: (
-                            <Suspense fallback={<PageLoader />}>
-                                <SettingsPage />
                             </Suspense>
                         ),
                     },

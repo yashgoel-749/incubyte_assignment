@@ -17,6 +17,7 @@ export const ROUTES = {
     DASHBOARD: '/dashboard',
     VEHICLES: '/vehicles',
     VEHICLE_DETAIL: '/vehicles/:id',
+    EDIT_VEHICLE: '/vehicles/:id/edit',
     ADD_VEHICLE: '/vehicles/new',
     INVENTORY: '/inventory',
     PURCHASES: '/purchases',

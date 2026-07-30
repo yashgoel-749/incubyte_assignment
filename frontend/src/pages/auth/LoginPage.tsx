@@ -145,7 +145,16 @@ export default function LoginPage() {
             {/* ── Social / SSO ─────────────────────────────────────────── */}
             <SocialLoginSection />
 
-            {/* ── Register link ─────────────────────────────────────────── */}
+            {/* ── Admin/register links ─────────────────────────────────── */}
+            <p className="text-center text-xs font-medium text-slate-500">
+                Admin access requires an ADMIN account. If you are an admin, sign in with your admin credentials or{' '}
+                <Link
+                    to={`${ROUTES.REGISTER}?role=ADMIN`}
+                    className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                >
+                    register as Admin
+                </Link>.
+            </p>
             <p className="text-center text-xs font-medium text-slate-500">
                 Don't have an account yet?{' '}
                 <Link

@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Download, Plus, ClipboardList, CheckCircle, Tag, Banknote, ListFilter, ArrowDownUp, PackageOpen } from 'lucide-react';
 import { Button, Pagination, EmptyState, LoadingSpinner, Input, Select } from '../../components/ui';
 import { StatisticsCard, VehicleCard } from '../../components/dashboard';
+import { useAppDispatch, useAuth } from '../../hooks';
+import vehicleService from '../../services/vehicleService';
+import { removeVehicle } from '../../store/slices/vehicleSlice';
 import { useDashboardViewModel, type DashboardViewModelProps } from '../../hooks/useDashboardViewModel';
+import { ROUTES } from '../../utils/constants';
 
 const stats = [
     { id: '1', title: 'TOTAL VEHICLES', value: '1,240', subtext: '↗ 12.5% vs last month', icon: <ClipboardList size={18} /> },
@@ -31,7 +36,29 @@ export default function DashboardPage(props: DashboardViewModelProps) {
         maxPrice, setMaxPrice,
     } = useDashboardViewModel(props);
 
+    const { user } = useAuth();
+    const isAdmin = user?.role === 'ADMIN';
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [showFilters, setShowFilters] = useState(false);
+
+    const handleNewVehicle = () => navigate(ROUTES.ADD_VEHICLE);
+    const handleEditVehicle = (id?: string) => {
+        if (!id) return;
+        navigate(ROUTES.EDIT_VEHICLE.replace(':id', id));
+    };
+    const handleDeleteVehicle = async (id?: string) => {
+        if (!id) return;
+        const confirmed = window.confirm('Are you sure you want to delete this vehicle?');
+        if (!confirmed) return;
+
+        try {
+            await vehicleService.remove(id);
+            dispatch(removeVehicle(id));
+        } catch (error) {
+            console.error('Failed to delete vehicle', error);
+        }
+    };
 
     const displayLoading = isLoading;
     const displayVehicles = vehicles;
@@ -50,7 +77,11 @@ export default function DashboardPage(props: DashboardViewModelProps) {
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     <Button variant="outline" leftIcon={<Download size={16} />}>Export Report</Button>
-                    <Button variant="primary" leftIcon={<Plus size={16} />}>New Vehicle</Button>
+                    {isAdmin && (
+                        <Button variant="primary" leftIcon={<Plus size={16} />} onClick={handleNewVehicle}>
+                            New Vehicle
+                        </Button>
+                    )}
                 </div>
             </div>
 
@@ -158,6 +189,8 @@ export default function DashboardPage(props: DashboardViewModelProps) {
                                 <VehicleCard
                                     key={vehicle.id}
                                     vehicle={vehicle as any}
+                                    onEdit={() => handleEditVehicle(vehicle.id)}
+                                    onDelete={() => handleDeleteVehicle(vehicle.id)}
                                 />
                             ))}
                         </div>

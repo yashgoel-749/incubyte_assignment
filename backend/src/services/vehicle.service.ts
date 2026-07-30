@@ -46,7 +46,13 @@ export const deleteVehicle = async (id: number) => {
 export const purchaseVehicle = async (id: number, quantity: number = 1) => {
     return await vehicleRepository.purchase(id, quantity);
 };
-
+export const getVehicleById = async (id: number) => {
+    const vehicle = await vehicleRepository.findById(id);
+    if (!vehicle) {
+        throw new AppError(`Vehicle with id ${id} not found`, 404);
+    }
+    return vehicle;
+};
 // ── Restock a vehicle ───────────────────────────────────────────
 export const restockVehicle = async (id: number) => {
     return await vehicleRepository.restock(id);
