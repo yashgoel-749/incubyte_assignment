@@ -7,8 +7,7 @@ import { Mail, Lock, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { Button, Input, Card } from '../../components/ui';
 import { ROUTES } from '../../utils/constants';
 import { useAppDispatch } from '../../hooks';
-import { setCredentials } from '../../store/slices/authSlice';
-import { authService } from '../../services';
+import { loginUser } from '../../store/thunks/authThunks';
 
 const loginSchema = z.object({
     email: z.string().min(1, 'Email is required').email('Enter a valid email address'),
@@ -33,14 +32,15 @@ export default function LoginPage() {
     });
 
     const onSubmit = async (data: LoginFormInputs) => {
-        try {
-            setAuthError('');
-            const response = await authService.login({ email: data.email, password: data.password });
-            dispatch(setCredentials(response));
+        setAuthError('');
+        const result = await dispatch(loginUser({ email: data.email, password: data.password }));
+
+        if (loginUser.fulfilled.match(result)) {
             navigate(ROUTES.DASHBOARD, { replace: true });
-        } catch (error: any) {
-            setAuthError(error.message || 'Failed to login');
+            return;
         }
+
+        setAuthError(result.payload ?? 'Failed to login');
     };
 
     return (

@@ -8,6 +8,11 @@ import vehicleReducer from '../../store/slices/vehicleSlice';
 import { authService } from '../../services';
 import RegisterPage from './RegisterPage';
 
+jest.mock('../../services/api', () => ({
+  extractErrorMessage: (error: unknown, fallback: string) =>
+    error instanceof Error ? error.message : fallback,
+}));
+
 jest.mock('../../utils/constants', () => ({
   ROUTES: {
     DASHBOARD: '/dashboard',

@@ -1,4 +1,4 @@
-import apiClient from './api';
+import apiClient, { extractErrorMessage } from './api';
 import type { AuthResponse, LoginCredentials, RegisterCredentials } from '../types';
 
 // ─── Auth Service (Axios / Real Backend) ───────────────────────────────────
@@ -11,8 +11,12 @@ const authService = {
      * Creates a new user account and returns { user, token }.
      */
     async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-        const { data } = await apiClient.post<AuthResponse>('/auth/register', credentials);
-        return data;
+        try {
+            const { data } = await apiClient.post<AuthResponse>('/auth/register', credentials);
+            return data;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error, 'Failed to register'));
+        }
     },
 
     /**
@@ -20,8 +24,12 @@ const authService = {
      * Authenticates an existing user and returns { user, token }.
      */
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        const { data } = await apiClient.post<AuthResponse>('/auth/login', credentials);
-        return data;
+        try {
+            const { data } = await apiClient.post<AuthResponse>('/auth/login', credentials);
+            return data;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error, 'Failed to login'));
+        }
     },
 
     /**
@@ -30,8 +38,12 @@ const authService = {
      * Requires a valid JWT (attached automatically via request interceptor).
      */
     async getProfile(): Promise<AuthResponse['user']> {
-        const { data } = await apiClient.get<AuthResponse['user']>('/auth/me');
-        return data;
+        try {
+            const { data } = await apiClient.get<AuthResponse['user']>('/auth/me');
+            return data;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error, 'Failed to fetch profile'));
+        }
     },
 };
 

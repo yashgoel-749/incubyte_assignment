@@ -7,6 +7,26 @@ import axios, {
 import { store } from '../store';
 import { logout } from '../store/slices/authSlice';
 
+export const extractErrorMessage = (error: unknown, fallback: string): string => {
+    if (axios.isAxiosError(error)) {
+        const responseData = error.response?.data as { message?: unknown; error?: unknown } | undefined;
+        const message =
+            typeof responseData?.message === 'string' ? responseData.message :
+            typeof responseData?.error === 'string' ? responseData.error :
+            error.message;
+
+        if (message) {
+            return message;
+        }
+    }
+
+    if (error instanceof Error && error.message) {
+        return error.message;
+    }
+
+    return fallback;
+};
+
 // ─── Base URL ──────────────────────────────────────────────────────────────
 // Reads from Vite env vars; falls back to local dev server.
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000/api';

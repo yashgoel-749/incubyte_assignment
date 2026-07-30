@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { AuthState, User } from '../../types';
+import { fetchProfile, loginUser, registerUser } from '../thunks/authThunks';
 
 // ─── Initial State ─────────────────────────────────────────────────────────
 const storedToken = localStorage.getItem('ac_token');
@@ -52,6 +53,57 @@ const authSlice = createSlice({
         clearAuthError(state) {
             state.error = null;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(registerUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.user = action.payload.user;
+                state.token = action.payload.token;
+                state.isAuthenticated = true;
+                state.isLoading = false;
+                state.error = null;
+
+                localStorage.setItem('ac_token', action.payload.token);
+                localStorage.setItem('ac_user', JSON.stringify(action.payload.user));
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload ?? 'Failed to register';
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.user = action.payload.user;
+                state.token = action.payload.token;
+                state.isAuthenticated = true;
+                state.isLoading = false;
+                state.error = null;
+
+                localStorage.setItem('ac_token', action.payload.token);
+                localStorage.setItem('ac_user', JSON.stringify(action.payload.user));
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload ?? 'Failed to login';
+            })
+            .addCase(fetchProfile.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchProfile.fulfilled, (state, action) => {
+                state.user = action.payload;
+                state.isLoading = false;
+                state.error = null;
+            })
+            .addCase(fetchProfile.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload ?? 'Failed to fetch profile';
+            });
     },
 });
 

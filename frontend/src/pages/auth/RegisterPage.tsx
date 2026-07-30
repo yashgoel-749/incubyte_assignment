@@ -7,8 +7,7 @@ import { Mail, Lock, Eye, EyeOff, ShieldCheck, User } from 'lucide-react';
 import { Button, Input, Card } from '../../components/ui';
 import { ROUTES } from '../../utils/constants';
 import { useAppDispatch } from '../../hooks';
-import { setCredentials } from '../../store/slices/authSlice';
-import { authService } from '../../services';
+import { registerUser } from '../../store/thunks/authThunks';
 
 const registerSchema = z.object({
     name: z.string().min(1, 'Full name is required'),
@@ -33,14 +32,15 @@ export default function RegisterPage() {
     });
 
     const onSubmit = async (data: RegisterFormInputs) => {
-        try {
-            setAuthError('');
-            const response = await authService.register(data);
-            dispatch(setCredentials(response));
+        setAuthError('');
+        const result = await dispatch(registerUser(data));
+
+        if (registerUser.fulfilled.match(result)) {
             navigate(ROUTES.DASHBOARD, { replace: true });
-        } catch (error: any) {
-            setAuthError(error.message || 'Failed to register');
+            return;
         }
+
+        setAuthError(result.payload ?? 'Failed to register');
     };
 
     return (
