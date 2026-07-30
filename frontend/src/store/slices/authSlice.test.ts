@@ -55,3 +55,42 @@ describe('auth thunk flow', () => {
     expect(localStorage.getItem('ac_token')).toBe('token-123');
   });
 });
+
+describe('auth slice initialization (corrupted localStorage)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('does not crash and clears storage when ac_user is literal "undefined"', () => {
+    localStorage.setItem('ac_user', 'undefined');
+    localStorage.setItem('ac_token', 'corrupted-token');
+
+    jest.isolateModules(() => {
+      // Re-requiring the slice evaluates the top-level localStorage checks
+      const authSlice = require('./authSlice').default;
+      const initialState = authSlice(undefined, { type: '@@INIT' });
+
+      expect(initialState.user).toBeNull();
+      expect(initialState.token).toBeNull();
+      expect(initialState.isAuthenticated).toBe(false);
+      expect(localStorage.getItem('ac_user')).toBeNull();
+      expect(localStorage.getItem('ac_token')).toBeNull();
+    });
+  });
+
+  it('does not crash and clears storage when ac_user is malformed JSON', () => {
+    localStorage.setItem('ac_user', '{"id": "usr_001", "name": "broken');
+    localStorage.setItem('ac_token', 'corrupted-token');
+
+    jest.isolateModules(() => {
+      const authSlice = require('./authSlice').default;
+      const initialState = authSlice(undefined, { type: '@@INIT' });
+
+      expect(initialState.user).toBeNull();
+      expect(initialState.token).toBeNull();
+      expect(initialState.isAuthenticated).toBe(false);
+      expect(localStorage.getItem('ac_user')).toBeNull();
+      expect(localStorage.getItem('ac_token')).toBeNull();
+    });
+  });
+});

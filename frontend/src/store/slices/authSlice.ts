@@ -3,11 +3,25 @@ import type { AuthState, User } from '../../types';
 import { fetchProfile, loginUser, registerUser } from '../thunks/authThunks';
 
 // ─── Initial State ─────────────────────────────────────────────────────────
-const storedToken = localStorage.getItem('ac_token');
-const storedUser = localStorage.getItem('ac_user');
+let storedToken = localStorage.getItem('ac_token');
+const storedUserStr = localStorage.getItem('ac_user');
+
+let parsedUser: User | null = null;
+
+if (storedUserStr) {
+    try {
+        if (storedUserStr === 'undefined') throw new Error('Invalid JSON');
+        parsedUser = JSON.parse(storedUserStr) as User;
+    } catch (error) {
+        localStorage.removeItem('ac_token');
+        localStorage.removeItem('ac_user');
+        storedToken = null;
+        parsedUser = null;
+    }
+}
 
 const initialState: AuthState = {
-    user: storedUser ? (JSON.parse(storedUser) as User) : null,
+    user: parsedUser,
     token: storedToken ?? null,
     isAuthenticated: !!storedToken,
     isLoading: false,
