@@ -6,19 +6,22 @@ import { prisma } from '../config/db';
  */
 
 export const findUserByEmail = async (email: string) => {
-    const result: any[] = await prisma.$queryRawUnsafe(
-        'SELECT * FROM users WHERE email = $1',
-        email,
-    );
-    return result[0] || null;
+    const user = await prisma.user.findUnique({ where: { email } });
+    return user;
 };
 
 export const createUser = async (email: string, passwordHash: string, role: string = 'USER') => {
-    const result: any[] = await prisma.$queryRawUnsafe(
-        'INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role',
-        email,
-        passwordHash,
-        role,
-    );
-    return result[0];
+    const user = await prisma.user.create({
+        data: {
+            email,
+            password: passwordHash,
+            role,
+        },
+        select: {
+            id: true,
+            email: true,
+            role: true,
+        },
+    });
+    return user;
 };

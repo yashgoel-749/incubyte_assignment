@@ -1,40 +1,37 @@
-import type { AuthResponse, LoginCredentials, RegisterCredentials, User } from '../types';
+import apiClient from './api';
+import type { AuthResponse, LoginCredentials, RegisterCredentials } from '../types';
 
-const MOCK_USER: User = {
-    id: 'usr_123',
-    name: 'Alex Rivera',
-    email: 'manager@autocommand.com',
-    role: 'MANAGER',
-    createdAt: new Date().toISOString(),
-};
-
-const MOCK_TOKEN = 'mock.jwt.token.12345';
-
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+// ─── Auth Service (Axios / Real Backend) ───────────────────────────────────
+// All endpoints hit the Express backend at /api/auth/*
+// apiClient base URL = http://localhost:3000/api (or VITE_API_BASE_URL)
 
 const authService = {
-    async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        await delay(1200); // Mock network latency
-        if (credentials.email === 'error@autocommand.com') {
-            throw new Error('Invalid credentials');
-        }
-        return { user: MOCK_USER, token: MOCK_TOKEN };
-    },
-
+    /**
+     * POST /auth/register
+     * Creates a new user account and returns { user, token }.
+     */
     async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-        await delay(1200);
-        if (credentials.email === 'error@autocommand.com') {
-            throw new Error('Email already in use');
-        }
-        return {
-            user: { ...MOCK_USER, name: credentials.name, email: credentials.email },
-            token: MOCK_TOKEN
-        };
+        const { data } = await apiClient.post<AuthResponse>('/auth/register', credentials);
+        return data;
     },
 
+    /**
+     * POST /auth/login
+     * Authenticates an existing user and returns { user, token }.
+     */
+    async login(credentials: LoginCredentials): Promise<AuthResponse> {
+        const { data } = await apiClient.post<AuthResponse>('/auth/login', credentials);
+        return data;
+    },
+
+    /**
+     * GET /auth/me
+     * Returns the current authenticated user profile.
+     * Requires a valid JWT (attached automatically via request interceptor).
+     */
     async getProfile(): Promise<AuthResponse['user']> {
-        await delay(500);
-        return MOCK_USER;
+        const { data } = await apiClient.get<AuthResponse['user']>('/auth/me');
+        return data;
     },
 };
 

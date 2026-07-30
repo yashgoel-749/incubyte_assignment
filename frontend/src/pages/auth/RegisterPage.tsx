@@ -100,7 +100,7 @@ export default function RegisterPage() {
                 />
 
                 <Button type="submit" variant="primary" size="lg" isLoading={isSubmitting} className="w-full mt-2 py-3 rounded-xl border border-transparent">
-                    Create Account
+                    {isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </Button>
             </form>
 

@@ -12,18 +12,25 @@ if (process.env.NODE_ENV === 'test') {
         $transaction: async (cb: any) => {
             return await cb(prismaInstance);
         },
-        $queryRawUnsafe: async (query: string, ...args: any[]) => {
-            const text = query.toUpperCase();
-            if (text.startsWith('SELECT * FROM USERS')) {
-                const user = users.find((u: any) => u.email === args[0]);
-                return user ? [user] : [];
-            }
-            if (text.startsWith('INSERT INTO USERS')) {
-                const newUser = { id: users.length + 1, email: args[0], password: args[1], role: args[2] || 'USER' };
+        user: {
+            findUnique: async (args: any) => {
+                const email = args?.where?.email;
+                return users.find((u: any) => u.email === email) || null;
+            },
+            create: async (args: any) => {
+                const newUser = {
+                    id: users.length + 1,
+                    email: args.data.email,
+                    password: args.data.password,
+                    role: args.data.role || 'USER'
+                };
                 users.push(newUser);
-                return [{ id: newUser.id, email: newUser.email, role: newUser.role }];
-            }
-            return [];
+                // Respect select if given (rough mock)
+                if (args.select) {
+                    return { id: newUser.id, email: newUser.email, role: newUser.role };
+                }
+                return newUser;
+            },
         },
         vehicle: {
             create: async (args: any) => {
@@ -72,11 +79,7 @@ if (process.env.NODE_ENV === 'test') {
 } else {
     // Only import Prisma when not testing so missing client doesn't crash testing!
     const { PrismaClient } = require('@prisma/client');
-    prismaInstance = new PrismaClient({
-        datasources: {
-            db: { url: process.env.DATABASE_URL }
-        }
-    });
+    prismaInstance = new PrismaClient();
 }
 
 
