@@ -11,6 +11,7 @@ const initialState: VehicleState = {
     filters: { page: 1, limit: 12, sortBy: 'createdAt', sortOrder: 'desc' },
     isLoading: false,
     error: null,
+    globalSearch: '',
 };
 
 // ─── Slice ─────────────────────────────────────────────────────────────────
@@ -75,6 +76,10 @@ const vehicleSlice = createSlice({
             state.error = action.payload;
             state.isLoading = false;
         },
+
+        setGlobalSearch(state, action: PayloadAction<string>) {
+            state.globalSearch = action.payload;
+        },
     },
     // NOTE: extraReducers for fetchVehicles are NOT imported here to avoid a
     // circular dependency (vehicleSlice → vehicleThunks → vehicleService → api).
@@ -92,6 +97,7 @@ export const {
     resetFilters,
     setVehicleLoading,
     setVehicleError,
+    setGlobalSearch,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;

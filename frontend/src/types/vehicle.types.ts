@@ -24,11 +24,19 @@ export interface Vehicle {
 }
 
 export interface VehicleFilters {
+    // Field-level filters
+    make?: string;
+    model?: string;
+    category?: string;
+    // Global free-text search (Navbar)
+    q?: string;
+    // Price range
+    minPrice?: number;
+    maxPrice?: number;
+    // Legacy / sorting
     search?: string;
     status?: VehicleStatus;
     fuelType?: FuelType;
-    minPrice?: number;
-    maxPrice?: number;
     page?: number;
     limit?: number;
     sortBy?: 'price' | 'year' | 'createdAt';
@@ -51,6 +59,7 @@ export interface VehicleState {
     filters: VehicleFilters;
     isLoading: boolean;
     error: string | null;
+    globalSearch: string;
 }
 
 export interface CreateVehicleDto {

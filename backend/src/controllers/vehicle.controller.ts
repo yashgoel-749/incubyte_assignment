@@ -13,7 +13,15 @@ export const createVehicle = catchAsync(async (req: Request, res: Response): Pro
 });
 
 export const getVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const vehicles = await vehicleService.getVehicles();
+    // If any filter query param is present, delegate to searchVehicles so filters are applied.
+    const hasFilters = Object.keys(req.query).some(k =>
+        ['make', 'model', 'category', 'minPrice', 'maxPrice', 'q'].includes(k) && req.query[k]
+    );
+
+    const vehicles = hasFilters
+        ? await vehicleService.searchVehicles(req.query)
+        : await vehicleService.getVehicles();
+
     res.status(200).json({
         data: vehicles,
         total: vehicles.length,

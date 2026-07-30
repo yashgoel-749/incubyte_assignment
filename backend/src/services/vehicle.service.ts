@@ -15,6 +15,7 @@ export const searchVehicles = async (query: any) => {
         make: query.make,
         model: query.model,
         category: query.category,
+        q: query.q,
     };
 
     if (query.minPrice) filters.minPrice = parseFloat(query.minPrice);

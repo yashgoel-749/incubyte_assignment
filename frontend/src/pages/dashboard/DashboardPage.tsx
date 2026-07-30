@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Download, Plus, ClipboardList, CheckCircle, Tag, Banknote, ListFilter, ArrowDownUp, PackageOpen } from 'lucide-react';
-import { Button, Pagination, EmptyState, LoadingSpinner } from '../../components/ui';
+import { Button, Pagination, EmptyState, LoadingSpinner, Input, Select } from '../../components/ui';
 import { StatisticsCard, VehicleCard } from '../../components/dashboard';
 import { useDashboardViewModel, type DashboardViewModelProps } from '../../hooks/useDashboardViewModel';
 
@@ -10,8 +11,27 @@ const stats = [
     { id: '4', title: 'MONTHLY REVENUE', value: '₹12.4 Cr', subtext: 'Target: ₹15 Cr (82.6%)', icon: <Banknote size={18} />, variant: 'primary' as const },
 ];
 
+const CATEGORY_OPTIONS = [
+    { label: 'All Categories', value: '' },
+    { label: 'SUV', value: 'SUV' },
+    { label: 'Sedan', value: 'Sedan' },
+    { label: 'Coupe', value: 'Coupe' },
+    { label: 'MPV', value: 'MPV' },
+    { label: 'Hatchback', value: 'Hatchback' },
+    { label: 'Luxury', value: 'Luxury' },
+];
+
 export default function DashboardPage(props: DashboardViewModelProps) {
-    const { vehicles, isLoading, error, page, totalPages, total } = useDashboardViewModel(props);
+    const {
+        vehicles, isLoading, error, page, totalPages, total,
+        make, setMake,
+        model, setModel,
+        category, setCategory,
+        minPrice, setMinPrice,
+        maxPrice, setMaxPrice,
+    } = useDashboardViewModel(props);
+
+    const [showFilters, setShowFilters] = useState(false);
 
     const displayLoading = isLoading;
     const displayVehicles = vehicles;
@@ -22,6 +42,7 @@ export default function DashboardPage(props: DashboardViewModelProps) {
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
+            {/* ── Header ───────────────────────────────────────────────── */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Inventory Command Center</h2>
@@ -33,12 +54,57 @@ export default function DashboardPage(props: DashboardViewModelProps) {
                 </div>
             </div>
 
+            {/* ── Stats ────────────────────────────────────────────────── */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map(s => (
                     <StatisticsCard key={s.id} {...s} />
                 ))}
             </div>
 
+            {/* ── Search Filters ───────────────────────────────────────── */}
+            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                    <Input
+                        label="Make"
+                        id="make"
+                        value={make}
+                        onChange={(e) => setMake(e.target.value)}
+                        placeholder="e.g. Ford"
+                    />
+                    <Input
+                        label="Model"
+                        id="model"
+                        value={model}
+                        onChange={(e) => setModel(e.target.value)}
+                        placeholder="e.g. Mustang"
+                    />
+                    <Select
+                        label="Category"
+                        id="category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        options={CATEGORY_OPTIONS}
+                    />
+                    <Input
+                        label="Min Price"
+                        id="minPrice"
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        placeholder="Min"
+                    />
+                    <Input
+                        label="Max Price"
+                        id="maxPrice"
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        placeholder="Max"
+                    />
+                </div>
+            </div>
+
+            {/* ── Tab Bar ──────────────────────────────────────────────── */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-2 border-b border-slate-200 mt-2 mb-4">
                 <div className="flex flex-nowrap items-center gap-6 overflow-x-auto no-scrollbar w-full">
                     <button className="flex items-center gap-2 text-sm font-bold text-emerald-700 pb-2.5 border-b-2 border-emerald-600 whitespace-nowrap">
@@ -56,17 +122,26 @@ export default function DashboardPage(props: DashboardViewModelProps) {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                    <Button variant="outline" size="sm" leftIcon={<ListFilter size={15} />} className="font-semibold text-slate-600">Filters</Button>
+                    <Button
+                        variant="outline" size="sm"
+                        leftIcon={<ListFilter size={15} />}
+                        className="font-semibold text-slate-600"
+                        onClick={() => setShowFilters(f => !f)}
+                    >
+                        Filters
+                    </Button>
                     <Button variant="outline" size="sm" leftIcon={<ArrowDownUp size={15} />} className="font-semibold text-slate-600">Newest First</Button>
                 </div>
             </div>
 
+            {/* ── Error ────────────────────────────────────────────────── */}
             {displayError && (
                 <div className="bg-red-50 text-red-600 p-4 rounded-md">
                     {displayError}
                 </div>
             )}
 
+            {/* ── Vehicle Grid ─────────────────────────────────────────── */}
             {!displayError && (
                 <>
                     {displayLoading ? (

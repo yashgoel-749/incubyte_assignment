@@ -10,7 +10,7 @@ export const store = configureStore({
     },
     // Redux Toolkit ships with redux-thunk by default.
     // Serializable-check middleware auto-enabled in dev.
-    devTools: import.meta.env.DEV,
+    devTools: process.env.NODE_ENV !== 'production',
 });
 
 // ─── Inferred Types ────────────────────────────────────────────────────────

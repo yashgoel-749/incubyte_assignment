@@ -1,12 +1,24 @@
+import { useState, useEffect } from 'react';
 import { Bell, Moon, Menu } from 'lucide-react';
 import { useAuth } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { getInitials } from '../../utils/formatters';
 import { SearchBox } from '../ui';
+import { setGlobalSearch } from '../../store/slices/vehicleSlice';
 
 interface NavbarProps { onMenuClick: () => void; }
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
     const { user } = useAuth();
+    const dispatch = useAppDispatch();
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            dispatch(setGlobalSearch(searchTerm));
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchTerm, dispatch]);
 
     return (
         <header className="sticky top-0 z-10 flex h-16 items-center gap-4 bg-white border-b border-slate-200 px-4 lg:px-8">
@@ -15,7 +27,11 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
             </button>
 
             <div className="flex-1 max-w-lg">
-                <SearchBox placeholder="Search VIN, model or client..." />
+                <SearchBox
+                    placeholder="Search VIN, model or client..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </div>
 
             <div className="ml-auto flex items-center gap-4">

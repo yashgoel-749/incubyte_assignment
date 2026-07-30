@@ -12,8 +12,18 @@ export const findAll = async () => {
 
 export const findByFilters = async (filters: any) => {
     const where: any = {};
-    if (filters.make) where.make = filters.make;
-    if (filters.model) where.model = filters.model;
+
+    // Global free-text search (from Navbar) — matches make OR model
+    if (filters.q) {
+        where.OR = [
+            { make: { contains: filters.q, mode: 'insensitive' } },
+            { model: { contains: filters.q, mode: 'insensitive' } },
+        ];
+    }
+
+    // Field-level filters — case-insensitive contains for make/model, exact for category
+    if (filters.make) where.make = { contains: filters.make, mode: 'insensitive' };
+    if (filters.model) where.model = { contains: filters.model, mode: 'insensitive' };
     if (filters.category) where.category = filters.category;
 
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
