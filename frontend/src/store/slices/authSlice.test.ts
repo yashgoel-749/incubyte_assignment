@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import { registerUser } from '../thunks/authThunks';
+import { loginUser, registerUser } from '../thunks/authThunks';
 import { authService } from '../../services';
 
 jest.mock('../../services/api', () => ({
@@ -21,7 +21,7 @@ const mockedRegister = authService.register as jest.Mock;
 describe('auth thunk flow', () => {
   beforeEach(() => {
     mockedRegister.mockReset();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('stores user credentials after a successful registration', async () => {
@@ -52,45 +52,96 @@ describe('auth thunk flow', () => {
 
     expect(store.getState().auth.isAuthenticated).toBe(true);
     expect(store.getState().auth.user?.email).toBe('alice@example.com');
-    expect(localStorage.getItem('ac_token')).toBe('token-123');
+    expect(sessionStorage.getItem('ac_token')).toBe('token-123');
+  });
+
+  it('rehydrates the auth state from sessionStorage after a refresh', () => {
+    sessionStorage.setItem('ac_token', 'token-456');
+    sessionStorage.setItem('ac_user', JSON.stringify({
+      id: 'usr_002',
+      name: 'Bob Smith',
+      email: 'bob@example.com',
+      role: 'SALES',
+      createdAt: '2024-01-01T00:00:00.000Z',
+    }));
+
+    jest.isolateModules(() => {
+      const freshAuthReducer = require('./authSlice').default;
+      const store = configureStore({
+        reducer: {
+          auth: freshAuthReducer,
+        },
+      });
+
+      expect(store.getState().auth.isAuthenticated).toBe(true);
+      expect(store.getState().auth.user?.email).toBe('bob@example.com');
+    });
+  });
+
+  it('keeps the session alive when the backend only returns a token', async () => {
+    (authService.login as jest.Mock).mockResolvedValueOnce({ token: 'token-789' });
+
+    const store = configureStore({
+      reducer: {
+        auth: authReducer,
+      },
+    });
+
+    await store.dispatch(loginUser({ email: 'alice@example.com', password: 'strongpassword' }));
+
+    expect(store.getState().auth.isAuthenticated).toBe(true);
+    expect(store.getState().auth.token).toBe('token-789');
+    expect(sessionStorage.getItem('ac_token')).toBe('token-789');
+
+    jest.isolateModules(() => {
+      const freshAuthReducer = require('./authSlice').default;
+      const rehydratedStore = configureStore({
+        reducer: {
+          auth: freshAuthReducer,
+        },
+      });
+
+      expect(rehydratedStore.getState().auth.isAuthenticated).toBe(true);
+      expect(rehydratedStore.getState().auth.token).toBe('token-789');
+    });
   });
 });
 
-describe('auth slice initialization (corrupted localStorage)', () => {
+describe('auth slice initialization (corrupted sessionStorage)', () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('does not crash and clears storage when ac_user is literal "undefined"', () => {
-    localStorage.setItem('ac_user', 'undefined');
-    localStorage.setItem('ac_token', 'corrupted-token');
+    sessionStorage.setItem('ac_user', 'undefined');
+    sessionStorage.setItem('ac_token', 'corrupted-token');
 
     jest.isolateModules(() => {
-      // Re-requiring the slice evaluates the top-level localStorage checks
+      // Re-requiring the slice evaluates the top-level sessionStorage checks
       const authSlice = require('./authSlice').default;
       const initialState = authSlice(undefined, { type: '@@INIT' });
 
       expect(initialState.user).toBeNull();
-      expect(initialState.token).toBeNull();
-      expect(initialState.isAuthenticated).toBe(false);
-      expect(localStorage.getItem('ac_user')).toBeNull();
-      expect(localStorage.getItem('ac_token')).toBeNull();
+      expect(initialState.token).toBe('corrupted-token');
+      expect(initialState.isAuthenticated).toBe(true);
+      expect(sessionStorage.getItem('ac_user')).toBeNull();
+      expect(sessionStorage.getItem('ac_token')).toBe('corrupted-token');
     });
   });
 
   it('does not crash and clears storage when ac_user is malformed JSON', () => {
-    localStorage.setItem('ac_user', '{"id": "usr_001", "name": "broken');
-    localStorage.setItem('ac_token', 'corrupted-token');
+    sessionStorage.setItem('ac_user', '{"id": "usr_001", "name": "broken');
+    sessionStorage.setItem('ac_token', 'corrupted-token');
 
     jest.isolateModules(() => {
       const authSlice = require('./authSlice').default;
       const initialState = authSlice(undefined, { type: '@@INIT' });
 
       expect(initialState.user).toBeNull();
-      expect(initialState.token).toBeNull();
-      expect(initialState.isAuthenticated).toBe(false);
-      expect(localStorage.getItem('ac_user')).toBeNull();
-      expect(localStorage.getItem('ac_token')).toBeNull();
+      expect(initialState.token).toBe('corrupted-token');
+      expect(initialState.isAuthenticated).toBe(true);
+      expect(sessionStorage.getItem('ac_user')).toBeNull();
+      expect(sessionStorage.getItem('ac_token')).toBe('corrupted-token');
     });
   });
 });

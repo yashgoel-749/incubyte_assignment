@@ -51,7 +51,7 @@ const renderRegisterPage = () => {
 describe('RegisterPage', () => {
   beforeEach(() => {
     mockedRegister.mockReset();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('submits valid registration data and creates the user account', async () => {

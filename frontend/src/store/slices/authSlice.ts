@@ -2,20 +2,41 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { AuthState, User } from '../../types';
 import { fetchProfile, loginUser, registerUser } from '../thunks/authThunks';
 
+const storage = typeof window !== 'undefined' ? window.sessionStorage : null;
+
+const persistAuthSession = (user: User | null | undefined, token: string) => {
+    if (!storage) return;
+
+    if (!token) {
+        clearAuthSession();
+        return;
+    }
+
+    storage.setItem('ac_token', token);
+    if (user) {
+        storage.setItem('ac_user', JSON.stringify(user));
+    } else {
+        storage.removeItem('ac_user');
+    }
+};
+
+const clearAuthSession = () => {
+    storage?.removeItem('ac_token');
+    storage?.removeItem('ac_user');
+};
+
 // ─── Initial State ─────────────────────────────────────────────────────────
-let storedToken = localStorage.getItem('ac_token');
-const storedUserStr = localStorage.getItem('ac_user');
+let storedToken = storage?.getItem('ac_token') ?? null;
+const storedUserStr = storage?.getItem('ac_user') ?? null;
 
 let parsedUser: User | null = null;
 
-if (storedUserStr) {
+if (storedToken && storedUserStr) {
     try {
         if (storedUserStr === 'undefined') throw new Error('Invalid JSON');
         parsedUser = JSON.parse(storedUserStr) as User;
     } catch (error) {
-        localStorage.removeItem('ac_token');
-        localStorage.removeItem('ac_user');
-        storedToken = null;
+        storage?.removeItem('ac_user');
         parsedUser = null;
     }
 }
@@ -40,8 +61,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.error = null;
 
-            localStorage.setItem('ac_token', action.payload.token);
-            localStorage.setItem('ac_user', JSON.stringify(action.payload.user));
+            persistAuthSession(action.payload.user, action.payload.token);
         },
 
         /** Clear everything on logout */
@@ -51,8 +71,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.error = null;
 
-            localStorage.removeItem('ac_token');
-            localStorage.removeItem('ac_user');
+            clearAuthSession();
         },
 
         setLoading(state, action: PayloadAction<boolean>) {
@@ -81,8 +100,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.error = null;
 
-                localStorage.setItem('ac_token', action.payload.token);
-                localStorage.setItem('ac_user', JSON.stringify(action.payload.user));
+                persistAuthSession(action.payload.user, action.payload.token);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -99,8 +117,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.error = null;
 
-                localStorage.setItem('ac_token', action.payload.token);
-                localStorage.setItem('ac_user', JSON.stringify(action.payload.user));
+                persistAuthSession(action.payload.user, action.payload.token);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;

@@ -55,7 +55,7 @@ const renderLoginPage = () => {
 describe('LoginPage', () => {
   beforeEach(() => {
     mockedLogin.mockReset();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('logs the user in successfully', async () => {
@@ -133,7 +133,7 @@ describe('LoginPage', () => {
     await user.click(screen.getByRole('button', { name: /sign in/i }));
 
     await waitFor(() => {
-      expect(localStorage.getItem('ac_token')).toBe('jwt-token-123');
+      expect(sessionStorage.getItem('ac_token')).toBe('jwt-token-123');
     });
   });
 
