@@ -12,9 +12,9 @@ export default function AuthLayout() {
 
             {/* Brand Header */}
             <div className="absolute top-6 left-6 md:top-8 md:left-8">
-                <h1 className="text-xl font-bold text-blue-700 flex items-center gap-2 tracking-tight">
-                    <Car size={22} className="text-blue-700" />
-                    AutoCommand
+                <h1 className="text-xl font-bold text-emerald-700 flex items-center gap-2 tracking-tight">
+                    <Car size={22} className="text-emerald-700" />
+                    Premium Deluxe Motors
                 </h1>
             </div>
 

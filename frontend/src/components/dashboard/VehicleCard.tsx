@@ -2,6 +2,8 @@ import { Heart } from 'lucide-react';
 import { Card, Badge, Button } from '../ui';
 import { formatCurrency } from '../../utils/formatters';
 
+import { VehicleStatus } from '../../types';
+
 interface VehicleCardProps {
     make: string;
     model: string;
@@ -11,14 +13,14 @@ interface VehicleCardProps {
     price: number;
     stock: number;
     imageUrl?: string;
-    statusStatus?: 'AVAILABLE' | 'IN_TRANSIT' | 'SOLD';
+    status?: VehicleStatus;
     onPurchase?: () => void;
     onEdit?: () => void;
     onDelete?: () => void;
 }
 
 export default function VehicleCard({
-    make, model, year, fuelType, transmission, price, stock, imageUrl, statusStatus = 'AVAILABLE',
+    make, model, year, fuelType, transmission, price, stock, imageUrl, status = 'AVAILABLE',
     onPurchase, onEdit, onDelete
 }: VehicleCardProps) {
     // Use a placeholder if NO imageUrl is provided.
@@ -36,8 +38,8 @@ export default function VehicleCard({
 
                 {/* Status Badge */}
                 <div className="absolute top-3 left-3 z-10">
-                    <Badge variant={statusStatus === 'AVAILABLE' ? 'primary' : 'neutral'} className="shadow-md">
-                        {statusStatus.replace('_', ' ')}
+                    <Badge variant={status === 'AVAILABLE' ? 'primary' : 'neutral'} className="shadow-md">
+                        {status.replace('_', ' ')}
                     </Badge>
                 </div>
 
@@ -47,7 +49,7 @@ export default function VehicleCard({
                 </button>
 
                 {/* Overlay banner for in-transit mapping exactly to the screenshot's 'Coming soon' text */}
-                {statusStatus === 'IN_TRANSIT' && (
+                {status === 'IN_TRANSIT' && (
                     <div className="absolute bottom-0 inset-x-0 bg-slate-900/80 px-3 py-1.5 backdrop-blur-sm">
                         <p className="text-[10px] font-bold text-white tracking-wide uppercase">
                             Coming soon: Next Shipment Oct 15
@@ -64,7 +66,7 @@ export default function VehicleCard({
                 </p>
 
                 <div className="mt-3 flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-blue-600">{formatCurrency(price)}</span>
+                    <span className="text-xl font-bold text-emerald-600">{formatCurrency(price)}</span>
                     <span className="text-xs text-slate-500">{stock} in stock</span>
                 </div>
 

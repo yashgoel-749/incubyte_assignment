@@ -9,7 +9,7 @@ export default function ProfilePage() {
         <div className="max-w-lg space-y-5">
             <h2 className="text-2xl font-bold text-slate-100">Profile</h2>
             <Card className="flex items-center gap-5">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xl font-bold text-white">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xl font-bold text-white">
                     {user ? getInitials(user.name) : 'U'}
                 </div>
                 <div>

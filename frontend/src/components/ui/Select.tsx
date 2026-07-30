@@ -19,7 +19,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(({ label, error, optio
                         'w-full bg-white border rounded-lg text-sm transition-all focus:outline-none focus:ring-4 appearance-none',
                         'text-slate-900 py-2.5 pl-3 pr-10',
                         error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
-                            : 'border-slate-300 hover:border-slate-400 focus:border-blue-500 focus:ring-blue-500/20',
+                            : 'border-slate-300 hover:border-slate-400 focus:border-emerald-500 focus:ring-emerald-500/20',
                         className
                     ].join(' ')}
                     {...rest}

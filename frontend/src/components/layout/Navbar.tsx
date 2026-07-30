@@ -22,7 +22,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                 <div className="flex items-center gap-2 text-slate-500 border-r border-slate-200 pr-4">
                     <button className="relative p-2 rounded-full hover:bg-slate-100 transition-colors">
                         <Bell size={18} />
-                        <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white" />
+                        <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-emerald-600 ring-2 ring-white" />
                     </button>
                     <button className="p-2 rounded-full hover:bg-slate-100 transition-colors">
                         <Moon size={18} />
@@ -31,14 +31,14 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
                 <button className="flex items-center gap-3 text-left">
                     <div className="hidden sm:block">
-                        <p className="text-sm font-semibold text-slate-900 leading-none">{user?.name || 'Aarav Sharma'}</p>
+                        <p className="text-sm font-semibold text-slate-900 leading-none">{user?.name || 'Premium Deluxe'}</p>
                         <p className="text-xs text-slate-500 mt-1">{user?.role || 'Dealership Manager'}</p>
                     </div>
                     {user?.avatarUrl ? (
                         <img src={user.avatarUrl} alt="Avatar" className="h-9 w-9 rounded-full object-cover" />
                     ) : (
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">
-                            {getInitials(user?.name || 'Aarav Sharma')}
+                            {getInitials(user?.name || 'Premium Deluxe')}
                         </div>
                     )}
                 </button>

@@ -4,8 +4,6 @@ import axios, {
     type AxiosResponse,
     type AxiosError,
 } from 'axios';
-import { store } from '../store';
-import { logout } from '../store/slices/authSlice';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 /** Shape of the JSON body returned by the Express error handler. */
@@ -34,8 +32,28 @@ export const extractErrorMessage = (error: unknown, fallback: string): string =>
     return fallback;
 };
 
+// ─── Token Provider ─────────────────────────────────────────────────────────
+// Injectable getter — avoids circular dependency (api → store → slices → thunks → services → api).
+// Call setTokenProvider() once in main.tsx after the store is initialised.
+let _getToken: (() => string | null) | null = null;
+let _onUnauthorized: (() => void) | null = null;
+
+export function setTokenProvider(
+    getToken: () => string | null,
+    onUnauthorized: () => void,
+) {
+    _getToken = getToken;
+    _onUnauthorized = onUnauthorized;
+}
+
 // ─── Base URL ──────────────────────────────────────────────────────────────
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000/api';
+// Supports both Vite (import.meta.env) and Jest (process.env) environments.
+// __VITE_API_BASE_URL__ is replaced at build time by vite.config.ts define.
+declare const __VITE_API_BASE_URL__: string | undefined;
+const BASE_URL: string =
+    (typeof __VITE_API_BASE_URL__ !== 'undefined' ? __VITE_API_BASE_URL__ : undefined)
+    ?? (typeof process !== 'undefined' ? process.env['VITE_API_BASE_URL'] : undefined)
+    ?? 'http://localhost:3000/api';
 
 // ─── Axios Instance ────────────────────────────────────────────────────────
 const apiClient: AxiosInstance = axios.create({
@@ -45,10 +63,9 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 // ─── Request Interceptor ───────────────────────────────────────────────────
-// Attaches the JWT Bearer token from the Redux store to every request.
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = store.getState().auth.token;
+        const token = _getToken?.();
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -58,13 +75,11 @@ apiClient.interceptors.request.use(
 );
 
 // ─── Response Interceptor ──────────────────────────────────────────────────
-// Handles 401 globally — expired / invalid token triggers a logout so that
-// ProtectedRoute automatically redirects the user back to /login.
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
     (error: AxiosError) => {
         if (error.response?.status === 401) {
-            store.dispatch(logout());
+            _onUnauthorized?.();
         }
         return Promise.reject(error);
     },

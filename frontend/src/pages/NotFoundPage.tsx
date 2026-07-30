@@ -7,7 +7,7 @@ export default function NotFoundPage() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-950 text-center p-6">
             <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-800 border border-slate-700">
-                <Zap size={36} className="text-blue-500" />
+                <Zap size={36} className="text-emerald-500" />
             </div>
             <div>
                 <h1 className="text-6xl font-extrabold text-slate-700">404</h1>

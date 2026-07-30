@@ -68,6 +68,7 @@ const vehicleSlice = createSlice({
 
         setVehicleLoading(state, action: PayloadAction<boolean>) {
             state.isLoading = action.payload;
+            if (action.payload) state.error = null;
         },
 
         setVehicleError(state, action: PayloadAction<string>) {
@@ -75,6 +76,10 @@ const vehicleSlice = createSlice({
             state.isLoading = false;
         },
     },
+    // NOTE: extraReducers for fetchVehicles are NOT imported here to avoid a
+    // circular dependency (vehicleSlice → vehicleThunks → vehicleService → api).
+    // The fetchVehicles thunk manually dispatches setVehicleLoading / setVehicles
+    // / setVehicleError instead.
 });
 
 export const {

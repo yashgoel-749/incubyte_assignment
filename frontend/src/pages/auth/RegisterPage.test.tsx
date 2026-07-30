@@ -113,7 +113,7 @@ describe('RegisterPage', () => {
     renderRegisterPage();
 
     await user.type(screen.getByLabelText(/full name/i), 'Alice Johnson');
-    await user.type(screen.getByLabelText(/email address/i), 'error@autocommand.com');
+    await user.type(screen.getByLabelText(/email address/i), 'error@premiumdeluxemotors.com');
     await user.type(screen.getByLabelText(/password/i), 'strongpassword');
     await user.click(screen.getByRole('button', { name: /create account/i }));
 

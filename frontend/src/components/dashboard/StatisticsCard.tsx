@@ -14,14 +14,14 @@ export default function StatisticsCard({ title, value, subtext, icon, variant = 
 
     return (
         <Card
-            className={isPrimary ? 'bg-blue-700 border-none' : 'bg-white'}
+            className={isPrimary ? 'bg-emerald-700 border-none' : 'bg-white'}
             padding="md"
         >
             <div className="flex items-start justify-between">
                 <div>
                     <h3 className={[
                         'text-[11px] font-bold uppercase tracking-wider',
-                        isPrimary ? 'text-blue-200' : 'text-slate-500'
+                        isPrimary ? 'text-emerald-200' : 'text-slate-500'
                     ].join(' ')}>
                         {title}
                     </h3>
@@ -33,14 +33,14 @@ export default function StatisticsCard({ title, value, subtext, icon, variant = 
                     </p>
                     <p className={[
                         'mt-1.5 text-xs font-medium',
-                        isPrimary ? 'text-blue-100' : 'text-slate-500'
+                        isPrimary ? 'text-emerald-100' : 'text-slate-500'
                     ].join(' ')}>
                         {subtext}
                     </p>
                 </div>
                 <div className={[
                     'flex h-10 w-10 items-center justify-center rounded-lg',
-                    isPrimary ? 'bg-blue-600/50 text-white' : 'bg-slate-50 text-slate-400 border border-slate-100'
+                    isPrimary ? 'bg-emerald-600/50 text-white' : 'bg-slate-50 text-slate-400 border border-slate-100'
                 ].join(' ')}>
                     {icon}
                 </div>

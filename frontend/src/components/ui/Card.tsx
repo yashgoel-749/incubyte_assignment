@@ -19,7 +19,7 @@ export default function Card({ children, padding = 'md', hoverable = false, clas
             className={[
                 'bg-white border border-slate-200 rounded-xl shadow-sm',
                 paddingMap[padding],
-                hoverable ? 'hover:shadow-md hover:border-blue-200 cursor-pointer transition-all duration-200' : '',
+                hoverable ? 'hover:shadow-md hover:border-emerald-200 cursor-pointer transition-all duration-200' : '',
                 className,
             ].filter(Boolean).join(' ')}
             {...rest}

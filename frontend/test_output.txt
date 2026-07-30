@@ -1,0 +1,26 @@
+﻿npx : PASS 
+src/store/slices/authSlice.test.ts
+At line:1 char:1
++ npx jest --watchAll=false 2>&1 | 
+Out-File -FilePath "test_output.txt" ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecif 
+   ied: (PASS src/store/slices/authSli  
+  ce.test.ts:String) [], RemoteExcept   
+ ion
+    + FullyQualifiedErrorId : NativeCom 
+   mandError
+ 
+PASS src/pages/dashboard/DashboardPage.t
+est.tsx
+PASS src/pages/auth/LoginPage.test.tsx 
+(7.655 s)
+PASS 
+src/pages/auth/RegisterPage.test.tsx 
+(8.213 s)
+
+Test Suites: 4 passed, 4 total
+Tests:       20 passed, 20 total
+Snapshots:   0 total
+Time:        11.054 s
+Ran all test suites.

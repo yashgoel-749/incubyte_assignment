@@ -1,6 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import DashboardPage from './DashboardPage';
 
+jest.mock('../../hooks', () => ({
+  useAppDispatch: () => jest.fn(),
+  useAppSelector: () => ({
+    vehicles: [],
+    isLoading: false,
+    error: null,
+    total: 0,
+    page: 1,
+    totalPages: 1
+  })
+}));
+
 describe('DashboardPage', () => {
   it('shows a loading spinner while vehicle data is loading', () => {
     render(<DashboardPage {...({ isLoading: true } as any)} />);

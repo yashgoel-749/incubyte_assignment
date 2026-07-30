@@ -46,7 +46,7 @@ export default function RegisterPage() {
     return (
         <Card padding="lg" className="shadow-lg border-slate-100">
             <div className="flex flex-col items-center text-center mb-8">
-                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-4">
                     <ShieldCheck size={24} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Create Account</h2>
@@ -74,7 +74,7 @@ export default function RegisterPage() {
                 <Input
                     label="EMAIL ADDRESS"
                     type="email"
-                    placeholder="manager@autocommand.com"
+                    placeholder="manager@premiumdeluxemotors.com"
                     leftAdornment={<Mail size={16} />}
                     error={errors.email?.message}
                     {...register('email')}
@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
             <p className="mt-8 text-center text-xs font-medium text-slate-500">
                 Already have an account?{' '}
-                <Link to={ROUTES.LOGIN} className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
+                <Link to={ROUTES.LOGIN} className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors">
                     Sign In
                 </Link>
             </p>

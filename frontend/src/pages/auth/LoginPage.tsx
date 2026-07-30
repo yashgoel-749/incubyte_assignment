@@ -69,7 +69,7 @@ export default function LoginPage() {
         <Card padding="lg" className="shadow-lg border-slate-100">
             {/* ── Header ───────────────────────────────────────────────── */}
             <div className="flex flex-col items-center text-center mb-8">
-                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-4">
                     <ShieldCheck size={24} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 <Input
                     label="EMAIL ADDRESS"
                     type="email"
-                    placeholder="manager@autocommand.com"
+                    placeholder="manager@premiumdeluxemotors.com"
                     leftAdornment={<Mail size={16} />}
                     error={errors.email?.message}
                     {...register('email')}
@@ -118,14 +118,14 @@ export default function LoginPage() {
                     <label className="flex items-center gap-2 text-xs font-medium text-slate-600 cursor-pointer">
                         <input
                             type="checkbox"
-                            className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/30 transition-all"
+                            className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500/30 transition-all"
                             {...register('rememberMe')}
                         />
                         Remember me
                     </label>
                     <a
                         href="#"
-                        className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
                     >
                         Forgot password?
                     </a>
@@ -150,7 +150,7 @@ export default function LoginPage() {
                 Don't have an account yet?{' '}
                 <Link
                     to={ROUTES.REGISTER}
-                    className="text-blue-600 hover:text-blue-700 font-bold transition-colors"
+                    className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
                 >
                     Register
                 </Link>

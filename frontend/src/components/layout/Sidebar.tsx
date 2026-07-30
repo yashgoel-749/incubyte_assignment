@@ -38,8 +38,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose?
                 ].join(' ')}
             >
                 <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-200">
-                    <h1 className="text-xl font-bold text-blue-700 tracking-tight">
-                        AutoCommand
+                    <h1 className="text-xl font-bold text-emerald-700 tracking-tight">
+                        Premium Deluxe Motors
                         <span className="block text-[10px] uppercase font-semibold tracking-wider text-slate-400 mt-0.5">
                             Executive Suite
                         </span>
@@ -55,7 +55,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose?
                             className={({ isActive }) => [
                                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                                 isActive
-                                    ? 'bg-blue-50 text-blue-700'
+                                    ? 'bg-emerald-50 text-emerald-700'
                                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                             ].join(' ')}
                         >

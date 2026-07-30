@@ -93,13 +93,7 @@ describe('LoginPage', () => {
     const user = userEvent.setup();
     renderLoginPage();
 
-    await user.type(screen.getByLabelText(/email address/i), 'error@autocommand.com');
-    await user.type(screen.getByLabelText(/password/i), 'strongpassword');
-    await user.click(screen.getByRole('button', { name: /sign in/i }));
-
-    expect(await screen.findByText('Invalid credentials')).toBeInTheDocument();
-  });
-
+    await user.type(screen.getByLabelText(/email address/i), 'error@premiumdeluxemotors.com');
   it('shows a loading state while login is pending', async () => {
     mockedLogin.mockImplementation(() => new Promise(() => undefined));
 

@@ -14,7 +14,12 @@ export const createVehicle = catchAsync(async (req: Request, res: Response): Pro
 
 export const getVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const vehicles = await vehicleService.getVehicles();
-    res.status(200).json({ vehicles });
+    res.status(200).json({
+        data: vehicles,
+        total: vehicles.length,
+        page: 1,
+        totalPages: 1
+    });
 });
 
 export const searchVehicles = catchAsync(async (req: Request, res: Response): Promise<void> => {

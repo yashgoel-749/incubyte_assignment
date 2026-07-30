@@ -21,7 +21,7 @@ export default function ConfirmationDialog({
     return (
         <Modal isOpen={isOpen} onClose={onClose} maxWidth="sm">
             <div className="flex items-start gap-4">
-                <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-full ${isDestructive ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'}`}>
+                <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-full ${isDestructive ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
                     <AlertCircle size={24} />
                 </div>
                 <div className="pt-1 w-full">

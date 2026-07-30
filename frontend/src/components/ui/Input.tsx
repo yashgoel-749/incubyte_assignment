@@ -27,7 +27,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ label, error, helperTe
                         leftAdornment ? 'pl-9' : 'pl-3',
                         rightAdornment ? 'pr-9' : 'pr-3',
                         error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
-                            : 'border-slate-300 hover:border-slate-400 focus:border-blue-500 focus:ring-blue-500/20',
+                            : 'border-slate-300 hover:border-slate-400 focus:border-emerald-500 focus:ring-emerald-500/20',
                         className
                     ].join(' ')}
                     {...rest}

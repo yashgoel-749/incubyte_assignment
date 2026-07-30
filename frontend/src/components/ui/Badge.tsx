@@ -13,7 +13,7 @@ const variantStyles: Record<BadgeVariant, string> = {
     danger: 'bg-red-50 text-red-700 border-red-200',
     info: 'bg-sky-50 text-sky-700 border-sky-200',
     neutral: 'bg-slate-100 text-slate-700 border-slate-200',
-    primary: 'bg-blue-600 text-white border-blue-600 shadow-sm', // For highlighting tags in the screenshot
+    primary: 'bg-emerald-600 text-white border-emerald-600 shadow-sm', // For highlighting tags in the screenshot
 };
 
 export default function Badge({ children, variant = 'neutral', size = 'sm', className = '' }: BadgeProps) {

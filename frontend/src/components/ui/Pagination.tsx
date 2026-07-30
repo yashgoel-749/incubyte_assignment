@@ -23,11 +23,12 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
             {pages.map((p) => (
                 <button
                     key={p}
+                    aria-label={`Page ${p}`}
                     onClick={() => onPageChange(p)}
                     className={[
                         'flex items-center justify-center w-8 h-8 rounded text-sm font-medium transition-colors',
                         currentPage === p
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-emerald-600 text-white'
                             : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                     ].join(' ')}
                 >
