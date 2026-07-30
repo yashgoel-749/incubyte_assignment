@@ -7,17 +7,24 @@ import axios, {
 import { store } from '../store';
 import { logout } from '../store/slices/authSlice';
 
+// ─── Types ─────────────────────────────────────────────────────────────────
+/** Shape of the JSON body returned by the Express error handler. */
+type ApiErrorShape = { message?: unknown; error?: unknown };
+
+// ─── Error Utility ─────────────────────────────────────────────────────────
+/**
+ * Extracts a human-readable message from any thrown value.
+ * Handles Axios errors (reads response.data.message / response.data.error),
+ * plain Error instances, and everything else via the fallback string.
+ */
 export const extractErrorMessage = (error: unknown, fallback: string): string => {
     if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data as { message?: unknown; error?: unknown } | undefined;
-        const message =
-            typeof responseData?.message === 'string' ? responseData.message :
-            typeof responseData?.error === 'string' ? responseData.error :
-            error.message;
-
-        if (message) {
-            return message;
-        }
+        const body = error.response?.data as ApiErrorShape | undefined;
+        const msg =
+            typeof body?.message === 'string' ? body.message :
+                typeof body?.error === 'string' ? body.error :
+                    error.message;
+        if (msg) return msg;
     }
 
     if (error instanceof Error && error.message) {
@@ -28,7 +35,6 @@ export const extractErrorMessage = (error: unknown, fallback: string): string =>
 };
 
 // ─── Base URL ──────────────────────────────────────────────────────────────
-// Reads from Vite env vars; falls back to local dev server.
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000/api';
 
 // ─── Axios Instance ────────────────────────────────────────────────────────
@@ -39,7 +45,7 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 // ─── Request Interceptor ───────────────────────────────────────────────────
-// Automatically attaches the JWT Bearer token from the Redux store.
+// Attaches the JWT Bearer token from the Redux store to every request.
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         const token = store.getState().auth.token;
@@ -52,12 +58,12 @@ apiClient.interceptors.request.use(
 );
 
 // ─── Response Interceptor ──────────────────────────────────────────────────
-// Handles 401 globally (token expired / invalid) by dispatching logout.
+// Handles 401 globally — expired / invalid token triggers a logout so that
+// ProtectedRoute automatically redirects the user back to /login.
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
     (error: AxiosError) => {
         if (error.response?.status === 401) {
-            // Token expired — clear auth state so <ProtectedRoute> redirects to /login
             store.dispatch(logout());
         }
         return Promise.reject(error);

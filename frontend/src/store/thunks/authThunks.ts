@@ -3,7 +3,12 @@ import { authService } from '../../services';
 import { extractErrorMessage } from '../../services/api';
 import type { AuthResponse, LoginCredentials, RegisterCredentials } from '../../types';
 
-export const registerUser = createAsyncThunk<AuthResponse, RegisterCredentials, { rejectValue: string }>(
+// ─── Shared thunk config ───────────────────────────────────────────────────
+/** Rejectvalue is always a plain string — consumed by authSlice.error. */
+type ThunkConfig = { rejectValue: string };
+
+// ─── Register ─────────────────────────────────────────────────────────────
+export const registerUser = createAsyncThunk<AuthResponse, RegisterCredentials, ThunkConfig>(
     'auth/register',
     async (credentials, { rejectWithValue }) => {
         try {
@@ -14,7 +19,8 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterCredentials, 
     },
 );
 
-export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { rejectValue: string }>(
+// ─── Login ─────────────────────────────────────────────────────────────────
+export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, ThunkConfig>(
     'auth/login',
     async (credentials, { rejectWithValue }) => {
         try {
@@ -25,7 +31,8 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { reje
     },
 );
 
-export const fetchProfile = createAsyncThunk<AuthResponse['user'], void, { rejectValue: string }>(
+// ─── Fetch Profile ─────────────────────────────────────────────────────────
+export const fetchProfile = createAsyncThunk<AuthResponse['user'], void, ThunkConfig>(
     'auth/fetchProfile',
     async (_, { rejectWithValue }) => {
         try {
