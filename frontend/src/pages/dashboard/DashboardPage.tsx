@@ -1,6 +1,7 @@
-import { Download, Plus, ClipboardList, CheckCircle, Tag, Banknote, ListFilter, ArrowDownUp } from 'lucide-react';
-import { Button, Pagination } from '../../components/ui';
+import { Download, Plus, ClipboardList, CheckCircle, Tag, Banknote, ListFilter, ArrowDownUp, PackageOpen } from 'lucide-react';
+import { Button, Pagination, EmptyState, LoadingSpinner } from '../../components/ui';
 import { StatisticsCard, VehicleCard } from '../../components/dashboard';
+import { useDashboardViewModel, type DashboardViewModelProps } from '../../hooks/useDashboardViewModel';
 
 const stats = [
     { id: '1', title: 'TOTAL VEHICLES', value: '1,240', subtext: '↗ 12.5% vs last month', icon: <ClipboardList size={18} /> },
@@ -9,88 +10,18 @@ const stats = [
     { id: '4', title: 'MONTHLY REVENUE', value: '₹12.4 Cr', subtext: 'Target: ₹15 Cr (82.6%)', icon: <Banknote size={18} />, variant: 'primary' as const },
 ];
 
-const mockVehicles = [
-    {
-        id: 1,
-        make: 'Tata',
-        model: 'Safari Dark Edition',
-        year: 2024,
-        fuelType: 'Diesel',
-        transmission: 'Automatic',
-        price: 2750000,
-        stock: 5,
-        status: 'AVAILABLE' as const,
-        imageUrl: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        id: 2,
-        make: 'Mahindra',
-        model: 'XUV700 AX7',
-        year: 2024,
-        fuelType: 'Petrol',
-        transmission: 'Automatic',
-        price: 2680000,
-        stock: 2,
-        status: 'AVAILABLE' as const,
-        imageUrl: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        id: 3,
-        make: 'Hyundai',
-        model: 'Creta N Line',
-        year: 2024,
-        fuelType: 'Petrol',
-        transmission: 'Automatic',
-        price: 2050000,
-        stock: 8,
-        status: 'AVAILABLE' as const,
-        imageUrl: 'https://images.unsplash.com/photo-1629897048514-3dd7414df9fc?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-        id: 4,
-        make: 'Kia',
-        model: 'Seltos X-Line',
-        year: 2024,
-        fuelType: 'Diesel',
-        transmission: 'Automatic',
-        price: 2035000,
-        stock: 0,
-        status: 'IN_TRANSIT' as const,
-        imageUrl: 'https://images.unsplash.com/photo-1609521263047-f8f205293f24?q=80&w=800&auto=format&fit=crop'
-    }
-];
+export default function DashboardPage(props: DashboardViewModelProps) {
+    const { vehicles, isLoading, error, page, totalPages, total } = useDashboardViewModel(props);
 
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchVehicles } from '../../store/thunks/vehicleThunks';
-import type { Vehicle } from '../../types';
-
-export default function DashboardPage(props: {
-    isLoading?: boolean;
-    vehicles?: Vehicle[];
-    error?: string | null;
-    pagination?: { currentPage: number; totalPages: number };
-}) {
-    const dispatch = useAppDispatch();
-    const storeVehiclesState = useAppSelector(state => state.vehicles);
-
-    const displayLoading = props.isLoading ?? storeVehiclesState.isLoading;
-    const displayVehicles = props.vehicles ?? storeVehiclesState.vehicles ?? [];
-    const displayError = props.error ?? storeVehiclesState.error;
-
-    const displayPage = props.pagination?.currentPage ?? storeVehiclesState.page ?? 1;
-    const displayTotalPages = props.pagination?.totalPages ?? storeVehiclesState.totalPages ?? 1;
-
-    useEffect(() => {
-        // If testing props are provided, skip API fetch
-        if (props.vehicles !== undefined || props.isLoading !== undefined || props.error !== undefined) return;
-
-        dispatch(fetchVehicles());
-    }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+    const displayLoading = isLoading;
+    const displayVehicles = vehicles;
+    const displayError = error;
+    const displayPage = page;
+    const displayTotalPages = totalPages;
+    const displayTotal = total || 850;
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Inventory Command Center</h2>
@@ -102,14 +33,12 @@ export default function DashboardPage(props: {
                 </div>
             </div>
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map(s => (
                     <StatisticsCard key={s.id} {...s} />
                 ))}
             </div>
 
-            {/* Filter Tabs & Toolbar */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-2 border-b border-slate-200 mt-2 mb-4">
                 <div className="flex flex-nowrap items-center gap-6 overflow-x-auto no-scrollbar w-full">
                     <button className="flex items-center gap-2 text-sm font-bold text-emerald-700 pb-2.5 border-b-2 border-emerald-600 whitespace-nowrap">
@@ -132,47 +61,36 @@ export default function DashboardPage(props: {
                 </div>
             </div>
 
-            {/* Error State */}
             {displayError && (
                 <div className="bg-red-50 text-red-600 p-4 rounded-md">
                     {displayError}
                 </div>
             )}
 
-            {/* Content Area */}
             {!displayError && (
                 <>
                     {displayLoading ? (
-                        <div className="py-20 flex justify-center text-slate-500">
-                            Loading vehicles...
-                        </div>
+                        <LoadingSpinner label="Loading vehicles..." />
                     ) : displayVehicles.length === 0 ? (
-                        <div className="py-20 flex justify-center text-slate-500">
-                            No vehicles available.
-                        </div>
+                        <EmptyState
+                            icon={<PackageOpen size={28} />}
+                            title="No vehicles available."
+                            description="Your inventory is currently empty. Add a new vehicle to get started."
+                        />
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {displayVehicles.map(v => (
+                            {displayVehicles.map((vehicle) => (
                                 <VehicleCard
-                                    key={v.id}
-                                    make={v.make}
-                                    model={v.model}
-                                    year={v.year}
-                                    fuelType={v.fuelType}
-                                    transmission={v.transmission}
-                                    price={v.price}
-                                    stock={v.stock}
-                                    status={v.status}
-                                    imageUrl={v.imageUrl || 'https://via.placeholder.com/800'}
+                                    key={vehicle.id}
+                                    vehicle={vehicle as any}
                                 />
                             ))}
                         </div>
                     )}
 
-                    {/* Pagination Footer */}
                     <div className="flex flex-col sm:flex-row items-center justify-between pt-5 pb-8 border-t border-slate-200 mt-6 gap-4">
                         <p className="text-xs text-slate-500 font-semibold tracking-wide">
-                            Showing {displayVehicles.length} of {storeVehiclesState.total || 850} available vehicles
+                            Showing {displayVehicles.length} of {displayTotal} available vehicles
                         </p>
                         <Pagination
                             currentPage={displayPage}
@@ -182,7 +100,6 @@ export default function DashboardPage(props: {
                     </div>
                 </>
             )}
-
         </div>
     );
 }
