@@ -69,12 +69,16 @@ export const deleteVehicle = catchAsync(async (req: Request, res: Response): Pro
 // ── Purchase a vehicle ─────────────────────────────────────────
 export const purchaseVehicle = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id, 10);
+    const quantity = req.body.quantity ? parseInt(req.body.quantity, 10) : 1;
 
     if (isNaN(id)) {
         throw new AppError('Vehicle id must be a valid integer', 400);
     }
+    if (isNaN(quantity) || quantity <= 0) {
+        throw new AppError('Quantity must be a positive integer', 400);
+    }
 
-    const vehicle = await vehicleService.purchaseVehicle(id);
+    const vehicle = await vehicleService.purchaseVehicle(id, quantity);
 
     res.status(200).json({
         message: 'Vehicle purchased successfully',

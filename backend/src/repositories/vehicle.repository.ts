@@ -52,18 +52,23 @@ export const deleteById = async (id: number) => {
 };
 
 // ── Purchase a vehicle (Atomic) ────────────────────────────
-export const purchase = async (id: number) => {
+export const purchase = async (id: number, quantity: number) => {
     return await prisma.$transaction(async (tx: any) => {
         const vehicle = await tx.vehicle.findUnique({ where: { id } });
         if (!vehicle) {
             throw new AppError(`Vehicle with id ${id} not found`, 404);
         }
-        if (vehicle.status === 'SOLD') {
-            throw new AppError('Vehicle is out of stock', 400);
+        if (vehicle.stock < quantity) {
+            throw new AppError('Vehicle is out of stock or insufficient quantity', 400);
         }
+
+        const newStock = vehicle.stock - quantity;
         return await tx.vehicle.update({
             where: { id },
-            data: { status: 'SOLD' },
+            data: {
+                stock: newStock,
+                status: newStock === 0 ? 'SOLD' : vehicle.status
+            },
         });
     });
 };

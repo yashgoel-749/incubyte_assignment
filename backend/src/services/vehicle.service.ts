@@ -43,8 +43,8 @@ export const deleteVehicle = async (id: number) => {
 };
 
 // ── Purchase a vehicle ──────────────────────────────────────────
-export const purchaseVehicle = async (id: number) => {
-    return await vehicleRepository.purchase(id);
+export const purchaseVehicle = async (id: number, quantity: number = 1) => {
+    return await vehicleRepository.purchase(id, quantity);
 };
 
 // ── Restock a vehicle ───────────────────────────────────────────

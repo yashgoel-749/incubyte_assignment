@@ -11,6 +11,10 @@ jest.mock('../../services/vehicleService', () => ({
   },
 }));
 
+jest.mock('../../hooks', () => ({
+  useAppDispatch: () => jest.fn(),
+}));
+
 const mockedPurchase = vehicleService.purchase as jest.MockedFunction<typeof vehicleService.purchase>;
 
 const baseVehicle = {
