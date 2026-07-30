@@ -18,6 +18,14 @@ jest.mock('../../services', () => ({
 
 const mockedRegister = authService.register as jest.Mock;
 
+interface AuthTestState {
+  auth: {
+    isAuthenticated: boolean;
+    user: { email?: string | null } | null;
+    token?: string | null;
+  };
+}
+
 describe('auth thunk flow', () => {
   beforeEach(() => {
     mockedRegister.mockReset();
@@ -50,8 +58,9 @@ describe('auth thunk flow', () => {
       })
     );
 
-    expect(store.getState().auth.isAuthenticated).toBe(true);
-    expect(store.getState().auth.user?.email).toBe('alice@example.com');
+    const currentState = store.getState() as { auth: { isAuthenticated: boolean; user: { email?: string | null } | null } };
+    expect(currentState.auth.isAuthenticated).toBe(true);
+    expect(currentState.auth.user?.email).toBe('alice@example.com');
     expect(sessionStorage.getItem('ac_token')).toBe('token-123');
   });
 
@@ -73,8 +82,9 @@ describe('auth thunk flow', () => {
         },
       });
 
-      expect(store.getState().auth.isAuthenticated).toBe(true);
-      expect(store.getState().auth.user?.email).toBe('bob@example.com');
+      const isolatedState = store.getState() as AuthTestState;
+      expect(isolatedState.auth.isAuthenticated).toBe(true);
+      expect(isolatedState.auth.user?.email).toBe('bob@example.com');
     });
   });
 
@@ -89,8 +99,9 @@ describe('auth thunk flow', () => {
 
     await store.dispatch(loginUser({ email: 'alice@example.com', password: 'strongpassword' }));
 
-    expect(store.getState().auth.isAuthenticated).toBe(true);
-    expect(store.getState().auth.token).toBe('token-789');
+    const loginState = store.getState() as { auth: { isAuthenticated: boolean; token?: string | null } };
+    expect(loginState.auth.isAuthenticated).toBe(true);
+    expect(loginState.auth.token).toBe('token-789');
     expect(sessionStorage.getItem('ac_token')).toBe('token-789');
 
     jest.isolateModules(() => {
@@ -101,8 +112,9 @@ describe('auth thunk flow', () => {
         },
       });
 
-      expect(rehydratedStore.getState().auth.isAuthenticated).toBe(true);
-      expect(rehydratedStore.getState().auth.token).toBe('token-789');
+      const rehydratedState = rehydratedStore.getState() as AuthTestState;
+      expect(rehydratedState.auth.isAuthenticated).toBe(true);
+      expect(rehydratedState.auth.token).toBe('token-789');
     });
   });
 });

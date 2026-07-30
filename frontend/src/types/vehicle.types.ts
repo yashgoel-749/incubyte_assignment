@@ -19,8 +19,25 @@ export interface Vehicle {
     vin?: string;
     mileage?: number;
     color?: string;
+    category?: string;
     createdAt: string;
     updatedAt: string;
+}
+
+export interface CreateVehicleDto {
+    make: string;
+    model: string;
+    year: number;
+    price: number;
+    stock: number;
+    fuelType: FuelType;
+    transmission: Transmission;
+    status?: VehicleStatus;
+    imageUrl?: string;
+    description?: string;
+    vin?: string;
+    mileage?: number;
+    color?: string;
 }
 
 export interface VehicleFilters {

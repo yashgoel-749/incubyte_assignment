@@ -40,7 +40,7 @@ export default function DashboardPage(props: DashboardViewModelProps) {
     const isAdmin = user?.role === 'ADMIN';
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [showFilters, setShowFilters] = useState(false);
+    const [showFilters, setShowFilters] = useState(true);
 
     const handleNewVehicle = () => navigate(ROUTES.ADD_VEHICLE);
     const handleEditVehicle = (id?: string) => {
@@ -93,9 +93,10 @@ export default function DashboardPage(props: DashboardViewModelProps) {
             </div>
 
             {/* ── Search Filters ───────────────────────────────────────── */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
-                    <Input
+            {showFilters && (
+                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                        <Input
                         label="Make"
                         id="make"
                         value={make}
@@ -134,6 +135,7 @@ export default function DashboardPage(props: DashboardViewModelProps) {
                     />
                 </div>
             </div>
+            )}
 
             {/* ── Tab Bar ──────────────────────────────────────────────── */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-2 border-b border-slate-200 mt-2 mb-4">

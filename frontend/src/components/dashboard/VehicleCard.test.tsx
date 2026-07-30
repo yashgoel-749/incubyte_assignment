@@ -17,7 +17,9 @@ jest.mock('../../hooks', () => ({
 
 const mockedPurchase = vehicleService.purchase as jest.MockedFunction<typeof vehicleService.purchase>;
 
-const baseVehicle = {
+import type { Vehicle } from '../../types';
+
+const baseVehicle: Vehicle = {
   id: 'vehicle-1',
   make: 'Ford',
   model: 'Mustang',
@@ -26,7 +28,14 @@ const baseVehicle = {
   transmission: 'Automatic',
   price: 42000,
   stock: 5,
-  status: 'AVAILABLE' as const,
+  status: 'AVAILABLE',
+  imageUrl: undefined,
+  description: undefined,
+  vin: undefined,
+  mileage: undefined,
+  color: undefined,
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-01-01T00:00:00.000Z',
 };
 
 describe('VehicleCard purchase workflow', () => {

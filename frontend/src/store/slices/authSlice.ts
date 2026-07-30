@@ -94,13 +94,13 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
+                state.user = action.payload.user ?? null;
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.isLoading = false;
                 state.error = null;
 
-                persistAuthSession(action.payload.user, action.payload.token);
+                persistAuthSession(action.payload.user ?? null, action.payload.token);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -111,13 +111,13 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
+                state.user = action.payload.user ?? null;
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.isLoading = false;
                 state.error = null;
 
-                persistAuthSession(action.payload.user, action.payload.token);
+                persistAuthSession(action.payload.user ?? null, action.payload.token);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -127,7 +127,7 @@ const authSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(fetchProfile.fulfilled, (state, action) => {
-                state.user = action.payload;
+                state.user = action.payload ?? null;
                 state.isLoading = false;
                 state.error = null;
             })

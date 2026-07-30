@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, type SubmitHandler, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button, Input, Select, Card, Spinner } from '../../components/ui';
-import { isValidYear } from '../../utils/validators';
-import type { CreateVehicleDto, Vehicle } from '../../types';
+import type { Vehicle } from '../../types';
 import vehicleService from '../../services/vehicleService';
 import { useAppDispatch } from '../../hooks';
 import { updateVehicle } from '../../store/slices/vehicleSlice';
@@ -26,6 +25,8 @@ const editVehicleSchema = z.object({
     color: z.string().max(50, 'Color is too long').optional().or(z.literal('')).transform((value) => value || undefined),
     mileage: z.preprocess((value) => (value === '' || value === undefined ? undefined : Number(value)), z.number().int().min(0, 'Mileage must be 0 or greater').optional()),
 });
+
+type EditVehicleFormValues = z.infer<typeof editVehicleSchema>;
 
 const FUEL_OPTIONS = [
     { value: 'Petrol', label: 'Petrol' },
@@ -53,8 +54,8 @@ export default function EditVehiclePage() {
         reset,
         control,
         formState: { errors, isSubmitting },
-    } = useForm<CreateVehicleDto>({
-        resolver: zodResolver(editVehicleSchema),
+    } = useForm<EditVehicleFormValues>({
+        resolver: zodResolver(editVehicleSchema) as unknown as Resolver<EditVehicleFormValues, any>,
         defaultValues: {
             make: '',
             model: '',
@@ -102,7 +103,7 @@ export default function EditVehiclePage() {
             .finally(() => setIsLoading(false));
     }, [id, reset]);
 
-    const onSubmit = async (data: CreateVehicleDto) => {
+    const onSubmit: SubmitHandler<EditVehicleFormValues> = async (data) => {
         if (!id) return;
         setSubmitError(null);
 

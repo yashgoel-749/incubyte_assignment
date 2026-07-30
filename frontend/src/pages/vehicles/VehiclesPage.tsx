@@ -75,9 +75,13 @@ export default function VehiclesPage() {
             {error && <div className="text-red-500">{error}</div>}
 
             {isLoading ? (
-                <div className="flex justify-center p-8"><LoadingSpinner size="lg" /></div>
+                <div className="flex justify-center p-8"><LoadingSpinner className="w-full" /></div>
             ) : vehicles.length === 0 ? (
-                <EmptyState title="No vehicles found" message="Try adjusting your filters" />
+                <EmptyState
+                    icon={<span className="text-4xl">🔍</span>}
+                    title="No vehicles found"
+                    description="Try adjusting your filters"
+                />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {vehicles.map((v) => (

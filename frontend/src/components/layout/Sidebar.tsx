@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-    LayoutDashboard, Car, PlusCircle, Package, ShoppingCart, User, Settings, LogOut, Zap
+    LayoutDashboard, Car, PlusCircle, Package, ShoppingCart, User, Settings, LogOut
 } from 'lucide-react';
 import { useAuth } from '../../hooks';
 import { ROUTES } from '../../utils/constants';

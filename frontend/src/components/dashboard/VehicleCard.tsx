@@ -1,4 +1,4 @@
-import { Heart, Save } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { Card, Badge, Button, Input } from '../ui';
 import { formatCurrency } from '../../utils/formatters';
 import { type VehicleStatus } from '../../types';
@@ -46,7 +46,7 @@ export default function VehicleCard(props: VehicleCardProps) {
         year,
         fuelType,
         transmission,
-        price,
+        price = 0,
         stock = 0,
         imageUrl,
         status = 'AVAILABLE',

@@ -1,10 +1,9 @@
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, type SubmitHandler, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Select, Card } from '../../components/ui';
 import { isValidYear } from '../../utils/validators';
-import type { CreateVehicleDto, FuelType, Transmission, VehicleStatus } from '../../types';
 import vehicleService from '../../services/vehicleService';
 import { useAppDispatch } from '../../hooks';
 import { addVehicle } from '../../store/slices/vehicleSlice';
@@ -20,6 +19,7 @@ const addVehicleSchema = z.object({
     stock: z.preprocess((value) => Number(value), z.number().int().min(1, 'Stock must be at least 1')),
     fuelType: z.enum(['Petrol', 'Diesel', 'Electric', 'Hybrid']),
     transmission: z.enum(['Automatic', 'Manual']),
+    status: z.enum(['AVAILABLE', 'SOLD', 'IN_TRANSIT', 'RESERVED']).default('AVAILABLE'),
     imageUrl: z.string().url('Enter a valid image URL').optional().or(z.literal('')).transform((value) => value || undefined),
     description: z.string().max(500, 'Description must be 500 characters or less').optional().or(z.literal('')).transform((value) => value || undefined),
     vin: z.string().max(17, 'VIN is too long').optional().or(z.literal('')).transform((value) => value || undefined),
@@ -39,13 +39,16 @@ const TRANSMISSION_OPTIONS = [
     { value: 'Manual', label: 'Manual' },
 ];
 
+type AddVehicleFormValues = z.infer<typeof addVehicleSchema>;
+
 export default function AddVehiclePage() {
-    const { register, handleSubmit, control, formState: { errors } } = useForm<CreateVehicleDto>({
-        resolver: zodResolver(addVehicleSchema),
+    const { register, handleSubmit, control, formState: { errors } } = useForm<AddVehicleFormValues>({
+        resolver: zodResolver(addVehicleSchema) as unknown as Resolver<AddVehicleFormValues, any>,
         defaultValues: {
             stock: 1,
             fuelType: 'Petrol',
             transmission: 'Automatic',
+            status: 'AVAILABLE',
             year: new Date().getFullYear(),
             price: 0,
             make: '',
@@ -64,7 +67,7 @@ export default function AddVehiclePage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
 
-    const onSubmit = async (data: CreateVehicleDto) => {
+    const onSubmit: SubmitHandler<AddVehicleFormValues> = async (data) => {
         setIsSubmitting(true);
         setSubmitError(null);
         try {
